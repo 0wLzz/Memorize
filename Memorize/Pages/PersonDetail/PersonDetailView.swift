@@ -49,9 +49,9 @@ struct PersonDetailView: View {
                             Text(person.name)
                                 .font(.largeTitle)
 
-                            Text(person.Interest?.name ?? "No Interest")
-                                .font(.headline)
-                                .padding(.bottom, 10)
+//                            Text(person.Interest?.name ?? "No Interest")
+//                                .font(.headline)
+//                                .padding(.bottom, 10)
 
                             // Contacts
                             HStack(spacing: 30) {

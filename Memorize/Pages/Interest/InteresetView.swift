@@ -18,7 +18,7 @@ struct InteresetView: View {
     let hans = PersonModel(
         name: "Hans",
         imageName: "Hans",
-        Interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
+        interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
     )
 
     
