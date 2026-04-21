@@ -18,10 +18,8 @@ struct PersonModel : Identifiable {
 //    #if DEBUG
     static let people: [PersonModel] = [
         PersonModel(name: "Hans", imageName: "Hans", Interest: InterestModel(name: "Board Games", icon: "puzzlepiece")),
-   
-        
-        PersonModel(name: "John", imageName: "Hans", Interest: InterestModel(name: "Music", icon: "music.note")),
-        PersonModel(name: "Lisa", imageName: "Hans", Interest: InterestModel(name: "Art", icon: "paintbrush"))
+        PersonModel(name: "Owen", imageName: "Owen", Interest: InterestModel(name: "Music", icon: "music.note")),
+        PersonModel(name: "Asa", imageName: "Asa", Interest: InterestModel(name: "Art", icon: "paintbrush"))
     ]
 //    #endif
 }
