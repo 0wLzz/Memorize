@@ -14,7 +14,7 @@ struct CameraButton: View {
     @State private var ShowingCamera = false // control camera sheet visibility
     var body: some View {
         
-        
+        // This button is used to take pictures
         Button(action: {ShowingCamera = true}) {
                         Image(systemName: "camera")
                             .scaledToFit()
