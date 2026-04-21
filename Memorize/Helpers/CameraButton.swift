@@ -15,6 +15,7 @@ struct CameraButton: View {
     var body: some View {
         
         // This button is used to take pictures
+        // This is a second comment to test git
         Button(action: {ShowingCamera = true}) {
                         Image(systemName: "camera")
                             .scaledToFit()
