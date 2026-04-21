@@ -14,7 +14,14 @@ struct InteresetView: View {
         GridItem(.fixed(160), spacing: 16),
         GridItem(.fixed(160), spacing: 16),
     ]
+    
+    let hans = PersonModel(
+        name: "Hans",
+        imageName: "Hans",
+        Interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
+    )
 
+    
     var body: some View {
         NavigationStack{
             ScrollView {
@@ -22,7 +29,7 @@ struct InteresetView: View {
                     ForEach(interestViewModel.filteredPeople) { person in
 
                         NavigationLink {
-                            ProfileView()
+                            PersonDetailView(person: person)
                         } label: {
                             PersonCard(person: person)
                         }
