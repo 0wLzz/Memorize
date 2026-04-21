@@ -42,9 +42,9 @@ struct PersonDetailView: View {
                             .foregroundColor(.white)
 
                         HStack {
-                            Image(systemName: person.Interest?.icon ?? "")
+                            Image(systemName: person.interest?.icon ?? "")
 
-                            Text(person.Interest?.name ?? "No Interest")
+                            Text(person.interest?.name ?? "No Interest")
                         }
                         .font(.headline)
                         .foregroundColor(.white)
@@ -80,7 +80,7 @@ struct PersonDetailView: View {
     let hans = PersonModel(
         name: "Hans",
         imageName: "Hans",
-        Interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
+        interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
     )
     PersonDetailView(person: hans)
 }
