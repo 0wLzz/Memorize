@@ -15,6 +15,7 @@ struct CameraButton: View {
     var body: some View {
         
         // This button is used to take pictures
+        // hi comment
         // This is a second comment to test git
         // Hello there, try to add a change
         // Test to see if gitignore works
