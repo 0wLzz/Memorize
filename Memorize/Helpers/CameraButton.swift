@@ -17,6 +17,7 @@ struct CameraButton: View {
         // This button is used to take pictures
         // This is a second comment to test git
         // Hello there, try to add a change
+        // Test to see if gitignore works
         Button(action: {ShowingCamera = true}) {
                         Image(systemName: "camera")
                             .scaledToFit()
