@@ -8,13 +8,92 @@
 import SwiftUI
 
 struct HomeView: View {
+    // setting up the ingredients for the home page
+    @State private var people: [PersonModel] = PersonModel.people
+    @State private var interests: [InterestModel] = InterestModel.interests
+    var metToday: [PersonModel] { people }
+    var favorites: [PersonModel] {[]}
+    
+    // grid setting for lazyHgrid and lazyVgrid
+    private let hColumns = [GridItem(.adaptive(minimum: 90))]
+    private let vColumns = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10)
+    ]
+
+    
+    private struct SectionHeader: View {
+        let title: String
+        var body: some View {
+            Text(title)
+                .font(.title2.bold())
+                .padding(.horizontal)
+        }
+    }
     
     var body: some View {
-        ZStack{
+
             // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
-            EmptyHome()
-            CameraBar()
-        }
+            if people.isEmpty {
+                ZStack {
+                    EmptyHome()
+                    CameraBar()
+                }
+            }
+            else {
+                NavigationStack{
+                    ZStack{
+                        ScrollView{
+                            VStack(alignment: .leading, spacing: 5){
+                                //// People You've Met Section
+                                SectionHeader(title:"People You've Met")
+                                ScrollView (.horizontal, showsIndicators: false){
+                                    LazyHStack(spacing: 20){
+                                        ForEach(metToday, id: \.id) { person in NavigationLink{
+                                            PersonDetailView(person: person)
+                                        } label: {
+                                            PersonCard(person: person)
+                                        }
+                                            
+                                        }
+                                        .padding()
+                                    }
+                                    
+                                }
+                                //// Favorites Section
+                                SectionHeader(title:"Favorites")
+                                if favorites.isEmpty{
+                                    Text(":(")
+                                        .foregroundStyle(Color.secondary)
+                                        .padding()
+                                } else {
+                                    
+                                }
+                                SectionHeader(title: "Interests")
+                                    .padding(.vertical)
+                                LazyVGrid(columns: vColumns) {
+                                    ForEach(interests, id: \.id) { interest in
+                                        NavigationLink {
+                                            InteresetView(interest: interest)
+                                        } label: {
+                                            InterestCard(interest: interest)
+                                        }
+                                    }.padding()
+                                    
+                                    
+                                }
+                            }
+                            
+                        }
+                        CameraBar()
+                    }    .navigationDestination(for: InterestModel.self) { interest in
+                        InteresetView(interest: interest)
+                        
+                    }
+                }
+            }
+
+        
         
     }
 }
