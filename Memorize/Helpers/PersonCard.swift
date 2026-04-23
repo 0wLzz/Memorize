@@ -47,7 +47,5 @@ struct PersonCard: View {
 }
 
 #Preview {
-    let boardgames = InterestModel.interests[0]
-    let Hans = PersonModel.people[0]
-    PersonCard(person: Hans)
+    PersonCard(person: PersonModel.people[0])
 }

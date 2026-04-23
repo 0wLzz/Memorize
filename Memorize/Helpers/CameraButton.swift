@@ -5,32 +5,41 @@
 //  Created by Hans Hartowidjojo on 20/04/26.
 //  Base Camera Button
 
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct CameraButton: View {
-    @State private var selectedItem: PhotosPickerItem? // holds the selected photo item
-    @State private var selectedImage: UIImage? // holds the loaded image
-    @State private var ShowingCamera = false // control camera sheet visibility
-    var body: some View {
+    @State private var selectedItem: PhotosPickerItem?  // holds the selected photo item
+    @State private var selectedImage: UIImage?  // holds the loaded image
+    @State private var ShowingCamera = false  // control camera sheet visibility
+    
+    struct DarkenButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .brightness(configuration.isPressed ? -0.15 : 0)
+                .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+        }
+    }
         
+    var body: some View {
 
-        Button(action: {ShowingCamera = true}) {
-                        Image(systemName: "camera")
-                            .scaledToFit()
-                            .font(.system(size: 50))
-                            .foregroundColor(Color.white)
-                            .background(
-                                Circle().fill(Color.black).frame(width: 100, height: 100)
-                            )
-                    }
+        Button(action: { ShowingCamera = true }) {
+            Image(systemName: "camera")
+                .scaledToFit()
+                .font(.system(size: 40))
+                .foregroundColor(Color.white)
+                .background(
+                    Circle().fill(Color.accent).frame(width: 90, height: 90)
+                )
+        }
+        .buttonStyle(DarkenButtonStyle())
         .fullScreenCover(isPresented: $ShowingCamera) {
             CameraView(image: $selectedImage)
                 .ignoresSafeArea()
                 .frame(width: 402, height: 874)
         }
-                }
-            }
+    }
+}
 
 #Preview {
     CameraButton()

@@ -19,8 +19,10 @@ struct EditPersonView: View {
         ScrollView{
             VStack(spacing: 16){
                 /// Profile Edit
-                Image("Hans")
-                    .frame(width: 200, height: 200)
+                Image("Hans2")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 400, height: 200, alignment: .center)
                     .clipShape(Circle())
                     .overlay {
                         Button {
