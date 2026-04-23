@@ -16,15 +16,17 @@ final class InterestViewModel: ObservableObject {
         repo.$persons
             .assign(to: &$persons)
     }
-    
-    var filteredPeople: [PersonModel] {
-        if searchQuery.isEmpty {
-            return persons
+
+    func filteredPeople(for interest: InterestModel) -> [PersonModel] {
+        let byInterest = PersonModel.people.filter {
+            $0.interest?.name == interest.name
         }
-        
-        return PersonModel.people.filter { person in
-            person.name.localizedCaseInsensitiveContains(searchQuery)
-            
+
+        if searchQuery.isEmpty {
+            return byInterest
+        }
+        return byInterest.filter {
+            $0.name.localizedCaseInsensitiveContains(searchQuery)
         }
     }
 }

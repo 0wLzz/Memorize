@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InterestModel: Identifiable {
+struct InterestModel: Identifiable, Hashable {
     let id = UUID()
     var name: String
     var icon: String // Using SF Symbols
