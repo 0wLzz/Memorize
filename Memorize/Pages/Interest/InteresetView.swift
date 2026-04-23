@@ -8,26 +8,22 @@
 import SwiftUI
 
 struct InteresetView: View {
-    @StateObject private var interestViewModel = InterestViewModel()
+    @StateObject private var interestViewModel: InterestViewModel
+    
+    init(repo: PersonRepository) {
+        _interestViewModel = StateObject(wrappedValue: InterestViewModel(repo: repo))
+    }
 
     let columns = [
         GridItem(.fixed(160), spacing: 16),
         GridItem(.fixed(160), spacing: 16),
     ]
     
-    let hans = PersonModel(
-        name: "Hans",
-        imageName: "Hans",
-        interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
-    )
-
-    
     var body: some View {
         NavigationStack{
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(interestViewModel.filteredPeople) { person in
-
                         NavigationLink {
                             PersonDetailView(person: person)
                         } label: {

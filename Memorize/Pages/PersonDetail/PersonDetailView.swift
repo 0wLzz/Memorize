@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PersonDetailView: View {
-    var person: PersonModel
+    @Binding var person: PersonModel
 
     func dummyFunction() {
 

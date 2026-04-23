@@ -12,6 +12,7 @@ struct CameraButton: View {
     @State private var selectedItem: PhotosPickerItem? // holds the selected photo item
     @State private var selectedImage: UIImage? // holds the loaded image
     @State private var ShowingCamera = false // control camera sheet visibility
+    
     var body: some View {
         
         // This button is used to take pictures
@@ -32,7 +33,6 @@ struct CameraButton: View {
         .fullScreenCover(isPresented: $ShowingCamera) {
             CameraView(image: $selectedImage)
                 .ignoresSafeArea()
-                .frame(width: 402, height: 874)
         }
                 }
             }

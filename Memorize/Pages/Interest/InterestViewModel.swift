@@ -9,11 +9,17 @@ import Combine
 import Foundation
 
 final class InterestViewModel: ObservableObject {
+    @Published var persons: [PersonModel] = []
     @Published var searchQuery: String = ""
+
+    init(repo: PersonRepository) {
+        repo.$persons
+            .assign(to: &$persons)
+    }
     
     var filteredPeople: [PersonModel] {
         if searchQuery.isEmpty {
-            return PersonModel.people
+            return persons
         }
         
         return PersonModel.people.filter { person in

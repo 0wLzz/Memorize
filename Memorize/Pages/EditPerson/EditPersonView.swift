@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct EditPersonView: View {
-    
-    @State private var name: String = ""
+    @Binding var newPerson : PersonModel
 
     func dummyFunction() {
         print("Test")
@@ -50,7 +49,7 @@ struct EditPersonView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(Color.gray, lineWidth: 1)
                                 
-                                TextField("Name", text: $name)
+                                TextField("Name", text: $newPerson.name)
                                     .padding(8)
                             }
                     }
@@ -69,7 +68,7 @@ struct EditPersonView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(Color.gray, lineWidth: 1)
                                 
-                                TextField("Interest", text: $name)
+                                TextField("Interest", text: $newPerson.name)
                                     .padding(8)
                             }
                     }
@@ -88,7 +87,7 @@ struct EditPersonView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(Color.gray, lineWidth: 1)
                                 
-                                TextField("Notes", text: $name)
+                                TextField("Notes", text: $newPerson.notes)
                                     .padding(8)
                             }
                     }
@@ -114,7 +113,7 @@ struct EditPersonView: View {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
                                     
-                                    TextField("Whatsapp Link", text: $name)
+                                    TextField("Whatsapp Link", text: $newPerson.contacts.WhatsApp)
                                         .padding(8)
                                 }
                         }
@@ -141,14 +140,14 @@ struct EditPersonView: View {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
                                     
-                                    TextField("Discord Link", text: $name)
+                                    TextField("Discord Link", text: $newPerson.contacts.Discrod)
                                         .padding(8)
                                 }
                         }
                     }
                 }
                 
-                /// WhatsApp Field
+                /// Mail Field
                 HStack {
                     Image("Mail")
                         .resizable()
@@ -168,7 +167,7 @@ struct EditPersonView: View {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
                                     
-                                    TextField("Mail", text: $name)
+                                    TextField("Mail", text: $newPerson.contacts.WhatsApp)
                                         .padding(8)
                                 }
                         }
@@ -195,7 +194,7 @@ struct EditPersonView: View {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
                                     
-                                    TextField("Instagram Link", text: $name)
+                                    TextField("Instagram Link", text: $newPerson.contacts.Instagram)
                                         .padding(8)
                                 }
                         }
@@ -215,8 +214,4 @@ struct EditPersonView: View {
         }
 
     }
-}
-
-#Preview {
-    EditPersonView()
 }

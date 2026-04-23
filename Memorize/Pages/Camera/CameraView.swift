@@ -35,12 +35,16 @@ struct CameraView: UIViewControllerRepresentable {
         init(_ parent: CameraView){
             self.parent = parent
         }
+        
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
                 parent.image = image // pass the selected image as parent
+                
+                
             }
             parent.presentationMode.wrappedValue.dismiss() // dismiss the picker
         }
+        
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             parent.presentationMode.wrappedValue.dismiss() // dismiss on cancel
         }

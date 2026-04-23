@@ -13,13 +13,14 @@ struct PersonModel : Identifiable {
     var imageName: String
     var interest: InterestModel?
     var notes: String?
-    var picturea: [String]?
+    var pictures: [String]?
+    var contacts: ContactsModel?
     
-//    #if DEBUG
+    #if DEBUG
     static let people: [PersonModel] = [
         PersonModel(name: "Hans", imageName: "Hans", interest: InterestModel.interests[0]),
         PersonModel(name: "John", imageName: "Hans", interest: InterestModel.interests[1]),
         PersonModel(name: "Lisa", imageName: "Hans", interest: InterestModel.interests[2])
     ]
-//    #endif
+    #endif
 }

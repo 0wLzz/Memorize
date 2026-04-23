@@ -18,6 +18,7 @@ struct CameraBar: View {
                 }
             }
 
+// GeometryReader
 
 #Preview {
     CameraBar()
