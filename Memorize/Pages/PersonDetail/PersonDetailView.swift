@@ -28,33 +28,34 @@ struct PersonDetailView: View {
                                 alignment: .center
                             )
                             .clipped()
-
-                        LinearGradient(
-                            colors: [
-                                Color.clear,
-                                Color.white.opacity(0.3),
-                                Color.white.opacity(0.75),
-                                Color.white,
-                            ],
-                            startPoint: .center,
-                            endPoint: .bottom
-                        )
+                            .overlay(
+                                Rectangle()
+                                    .fill(.ultraThinMaterial)
+                                    .mask(
+                                        LinearGradient(colors: [
+                                            Color(.clear),
+                                            Color(.black)
+                                        ], startPoint: .center, endPoint: .bottom)
+                                    )
+                            )
                         .frame(
                             width: geo.size.width,
                             height: geo.size.height * 0.7,
                             alignment: .center
                         )
 
-                        VStack(spacing: 4) {
+                        VStack(spacing: 10) {
                             Text(person.name)
                                 .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
 
 //                            Text(person.Interest?.name ?? "No Interest")
 //                                .font(.headline)
 //                                .padding(.bottom, 10)
 
                             // Contacts
-                            HStack(spacing: 30) {
+                            HStack(spacing: 40) {
                                 Image("Whatsapp")
                                     .resizable()
                                     .frame(width: 50, height: 50)
@@ -109,19 +110,19 @@ struct PersonDetailView: View {
                     // Grid preview (3 columns)
                     LazyVGrid(
                         columns: [
-                            GridItem(.flexible(), spacing: 2),
-                            GridItem(.flexible(), spacing: 2),
-                            GridItem(.flexible(), spacing: 2),
+                            GridItem(.flexible(), spacing: 1),
+                            GridItem(.flexible(), spacing: 1),
+                            GridItem(.flexible(), spacing: 1),
                         ],
-                        spacing: 2
+                        spacing: 1
                     ) {
                         ForEach(0..<100, id: \.self) { _ in
                             Image("Hans")
                                 .resizable()
                                 .scaledToFill()
-                                .frame(height: 100)
+                                .frame(height:100)
                                 .clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 2))
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
                     }
                     .padding(16)

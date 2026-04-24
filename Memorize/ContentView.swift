@@ -9,11 +9,23 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var repo: PersonRepository
-    
+    @State private var selectedTab = 0
+
     var body: some View {
-        HomeView(people: $repo.persons)
-        
-//        InteresetView(repo: repo, interest: InterestModel.interests.first!)
+        switch selectedTab {
+        case 0:
+            NavigationStack {
+                HomeView(people: $repo.persons, selectedTab: $selectedTab)
+            }
+        case 1:
+            CollectionView(repo: _repo, selectedTab: $selectedTab)
+
+        default:
+            NavigationStack {
+
+                HomeView(people: $repo.persons, selectedTab: $selectedTab)
+            }
+        }
     }
 }
 

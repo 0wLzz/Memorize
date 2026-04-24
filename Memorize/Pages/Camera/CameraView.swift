@@ -53,5 +53,4 @@ struct CameraView: UIViewControllerRepresentable {
             parent.presentationMode.wrappedValue.dismiss() // dismiss on cancel
         }
     }
-
 }

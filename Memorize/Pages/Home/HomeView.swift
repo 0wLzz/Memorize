@@ -14,10 +14,14 @@ struct HomeView: View {
     @State var interests: [InterestModel]
     var favorites: [PersonModel] { [] }
 
-    init(people: Binding<[PersonModel]>) {
+    @Binding var selectedTab : Int
+
+
+    init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
         self._metToday = people
         self.interests = InterestModel.interests
+        self._selectedTab = selectedTab
     }
 
     // grid setting for lazyHgrid and lazyVgrid
@@ -26,6 +30,7 @@ struct HomeView: View {
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
     ]
+
 
     private struct SectionHeader: View {
         let title: String
@@ -37,20 +42,25 @@ struct HomeView: View {
     }
 
     var body: some View {
+        // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
         if people.isEmpty {
             ZStack {
                 EmptyHome()
-                CameraBar()
+                CameraBar(
+                    selectedTab: $selectedTab,
+
+                ).offset(y:15)
             }
         } else {
             NavigationStack {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 5) {
+                            
                             /// People You've Met Section
                             SectionHeader(title: "People You've Met")
                             ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 20) {
+                                LazyHStack(spacing: -3) {
                                     ForEach($metToday, id: \.id) { $person in
                                         NavigationLink {
                                             PersonDetailView(person: $person)
@@ -63,23 +73,23 @@ struct HomeView: View {
                                     }
                                     .padding()
                                 }
-
                             }
-
+                            Divider().padding(.horizontal)
+                            
                             /// Favorites Section
                             SectionHeader(title: "Favorites")
                             if favorites.isEmpty {
-                                Text("You don't have a best friend :(")
+                                Text(":(")
                                     .foregroundStyle(Color.secondary)
                                     .padding()
                             } else {
 
                             }
-
-                            /// Interests Section
+                            
+                            Divider().padding(.horizontal)
                             SectionHeader(title: "Interests")
                                 .padding(.vertical)
-
+                            
                             LazyVGrid(columns: vColumns) {
                                 ForEach(interests, id: \.id) { interest in
                                     NavigationLink {
@@ -90,13 +100,29 @@ struct HomeView: View {
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
-                                }.padding()
+                                }.padding(.horizontal)
                             }
                         }
+                        .padding(.top, 70)
+                        .padding(.leading,10)
                     }
-                    CameraBar()
-                }
-                .navigationDestination(for: InterestModel.self) { interest in
+                    VStack{
+                        Text("Home")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading)
+                            .padding(.top,10)
+                            .background(.background)
+                            
+                        Spacer()
+                    }
+                    CameraBar(
+                        selectedTab: $selectedTab,
+
+                    ).offset(y:15)
+
+                }.navigationDestination(for: InterestModel.self) { interest in
                     InteresetView(repo: repo, interest: interest)
                 }
             }
@@ -104,3 +130,11 @@ struct HomeView: View {
 
     }
 }
+
+//#Preview {
+//    HomeView(
+//        selectedTab: .constant(0),
+//        isEarningsEntryViewShown: .constant(false)
+//    )
+//}
+
