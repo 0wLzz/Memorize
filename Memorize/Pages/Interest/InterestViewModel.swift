@@ -18,8 +18,8 @@ final class InterestViewModel: ObservableObject {
     }
 
     func filteredPeople(for interest: InterestModel) -> [PersonModel] {
-        let byInterest = PersonModel.people.filter {
-            $0.interest?.name == interest.name
+        let byInterest = persons.filter {
+            $0.interest.name == interest.name
         }
 
         if searchQuery.isEmpty {

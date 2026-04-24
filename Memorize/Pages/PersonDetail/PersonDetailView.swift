@@ -143,7 +143,7 @@ struct PersonDetailView: View {
 
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink {
-                        EditPersonView()
+                        EditPersonView(person: $person)
                     }
                     label: {
                         Image(systemName: "pencil")
@@ -154,11 +154,11 @@ struct PersonDetailView: View {
     }
 }
 
-#Preview {
-    let hans = PersonModel(
-        name: "Hans",
-        imageName: "Hans",
-        interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
-    )
-    PersonDetailView(person: hans)
-}
+//#Preview {
+//    let hans = PersonModel(
+//        name: "Hans",
+//        imageName: "Hans",
+//        interest: InterestModel(name: "Board Games", icon: "puzzlepiece")
+//    )
+//    PersonDetailView(person: hans)
+//}

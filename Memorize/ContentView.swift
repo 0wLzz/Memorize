@@ -11,7 +11,9 @@ struct ContentView: View {
     @EnvironmentObject var repo: PersonRepository
     
     var body: some View {
-        InteresetView(repo: repo)
+        HomeView(people: $repo.persons)
+        
+//        InteresetView(repo: repo, interest: InterestModel.interests.first!)
     }
 }
 

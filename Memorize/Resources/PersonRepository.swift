@@ -12,9 +12,8 @@ final class PersonRepository: ObservableObject {
     @Published var persons: [PersonModel]
     
     init() {
-        // For now initialize a hardcoded list
         #if DEBUG
-        self.persons = PersonModel.people
+        self.persons = []
         #endif
     }
 }

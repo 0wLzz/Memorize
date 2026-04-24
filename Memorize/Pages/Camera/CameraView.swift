@@ -11,8 +11,9 @@ import UIKit
 
 struct CameraView: UIViewControllerRepresentable {
     @Binding var image: UIImage?
-    
     @Environment(\.presentationMode) var presentationMode
+    
+    var onImageCaptured: (() -> Void)?
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController() // Create the Camera picker
@@ -40,7 +41,10 @@ struct CameraView: UIViewControllerRepresentable {
             if let image = info[.originalImage] as? UIImage {
                 parent.image = image // pass the selected image as parent
                 
+                // Save Image
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                 
+                parent.onImageCaptured?()
             }
             parent.presentationMode.wrappedValue.dismiss() // dismiss the picker
         }

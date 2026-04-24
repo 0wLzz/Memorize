@@ -6,26 +6,31 @@
 //
 
 import SwiftUI
+import Photos
+import PhotosUI
 
-struct EditPersonView: View {
-    @Binding var oldPerson: PersonModel
-    @State var newPerson: PersonModel
+struct AddPersonView: View {
+    @EnvironmentObject var repo: PersonRepository
     @Environment(\.dismiss) private var dismiss
+    @State var newPerson = PersonModel(
+        name: "",
+        imageName: "",
+        interest: InterestModel.interests[0],
+        contacts: ContactsModel.contactsExample
+    )
     
-    init(person: Binding<PersonModel>) {
-        self._oldPerson = person
-        self._newPerson = State(wrappedValue: person.wrappedValue)
+    func onSave(image: UIImage) {
+        newPerson.profileImage = image
+        repo.persons.append(newPerson)
     }
     
-    func savePerson() {
-        oldPerson = newPerson
-    }
+    var image: UIImage
 
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 /// Profile Edit
-                Image("Hans")
+                Image(uiImage: image)
                     .frame(width: 200, height: 200)
                     .clipShape(Circle())
                     .overlay {
@@ -77,8 +82,11 @@ struct EditPersonView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(Color.gray, lineWidth: 1)
 
-                                TextField("Interest", text: $newPerson.interest.name)
-                                    .padding(8)
+                                TextField(
+                                    "Interest",
+                                    text: $newPerson.interest.name
+                                )
+                                .padding(8)
                             }
                     }
                 }
@@ -130,8 +138,13 @@ struct EditPersonView: View {
                                     TextField(
                                         "Whatsapp Link",
                                         text: Binding(
-                                            get: {newPerson.contacts.WhatsApp ?? ""},
-                                            set: {newPerson.contacts.WhatsApp = $0}
+                                            get: {
+                                                newPerson.contacts.WhatsApp
+                                                    ?? ""
+                                            },
+                                            set: {
+                                                newPerson.contacts.WhatsApp = $0
+                                            }
                                         )
                                     )
                                     .padding(8)
@@ -158,12 +171,16 @@ struct EditPersonView: View {
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
-                                    
+
                                     TextField(
                                         "Discord Link",
                                         text: Binding(
-                                            get: {newPerson.contacts.Discrod ?? ""},
-                                            set: {newPerson.contacts.Discrod = $0}
+                                            get: {
+                                                newPerson.contacts.Discrod ?? ""
+                                            },
+                                            set: {
+                                                newPerson.contacts.Discrod = $0
+                                            }
                                         )
                                     )
                                     .padding(8)
@@ -190,12 +207,16 @@ struct EditPersonView: View {
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(Color.gray, lineWidth: 1)
-                                    
+
                                     TextField(
                                         "Email",
                                         text: Binding(
-                                            get: {newPerson.contacts.Email ?? ""},
-                                            set: {newPerson.contacts.Email = $0}
+                                            get: {
+                                                newPerson.contacts.Email ?? ""
+                                            },
+                                            set: {
+                                                newPerson.contacts.Email = $0
+                                            }
                                         )
                                     )
                                     .padding(8)
@@ -226,8 +247,14 @@ struct EditPersonView: View {
                                     TextField(
                                         "Instagram Link",
                                         text: Binding(
-                                            get: {newPerson.contacts.Instagram ?? ""},
-                                            set: {newPerson.contacts.Instagram = $0}
+                                            get: {
+                                                newPerson.contacts.Instagram
+                                                    ?? ""
+                                            },
+                                            set: {
+                                                newPerson.contacts.Instagram =
+                                                    $0
+                                            }
                                         )
                                     )
                                     .padding(8)
@@ -240,8 +267,9 @@ struct EditPersonView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        savePerson()
                         dismiss()
+                        onSave(image: image
+                        )
                     } label: {
                         Image(systemName: "checkmark")
                     }
