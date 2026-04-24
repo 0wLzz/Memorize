@@ -8,17 +8,133 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    var body: some View {
-        ZStack{
-            // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
-            EmptyHome()
-            CameraBar()
+    @EnvironmentObject var repo: PersonRepository
+    @Binding var people: [PersonModel]
+    @Binding var metToday: [PersonModel]
+    @State var interests: [InterestModel]
+    var favorites: [PersonModel] { [] }
+
+    @Binding var selectedTab : Int
+
+
+    init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
+        self._people = people
+        self._metToday = people
+        self.interests = InterestModel.interests
+        self._selectedTab = selectedTab
+    }
+
+    // grid setting for lazyHgrid and lazyVgrid
+    private let hColumns = [GridItem(.adaptive(minimum: 90))]
+    private let vColumns = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10),
+    ]
+
+
+    private struct SectionHeader: View {
+        let title: String
+        var body: some View {
+            Text(title)
+                .font(.title2.bold())
+                .padding(.horizontal)
         }
-        
+    }
+
+    var body: some View {
+        // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
+        if people.isEmpty {
+            ZStack {
+                EmptyHome()
+                CameraBar(
+                    selectedTab: $selectedTab,
+
+                ).offset(y:15)
+            }
+        } else {
+            NavigationStack {
+                ZStack {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 5) {
+                            
+                            /// People You've Met Section
+                            SectionHeader(title: "People You've Met")
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack(spacing: -3) {
+                                    ForEach($metToday, id: \.id) { $person in
+                                        NavigationLink {
+                                            PersonDetailView(person: $person)
+                                        } label: {
+                                            PersonCard(
+                                                person: $person.wrappedValue
+                                            )
+                                        }
+
+                                    }
+                                    .padding()
+                                }
+                            }
+                            Divider().padding(.horizontal)
+                            
+                            /// Favorites Section
+                            SectionHeader(title: "Favorites")
+                            if favorites.isEmpty {
+                                Text(":(")
+                                    .foregroundStyle(Color.secondary)
+                                    .padding()
+                            } else {
+
+                            }
+                            
+                            Divider().padding(.horizontal)
+                            SectionHeader(title: "Interests")
+                                .padding(.vertical)
+                            
+                            LazyVGrid(columns: vColumns) {
+                                ForEach(interests, id: \.id) { interest in
+                                    NavigationLink {
+                                        InteresetView(
+                                            repo: repo,
+                                            interest: interest
+                                        )
+                                    } label: {
+                                        InterestCard(interest: interest)
+                                    }
+                                }.padding(.horizontal)
+                            }
+                        }
+                        .padding(.top, 70)
+                        .padding(.leading,10)
+                    }
+                    VStack{
+                        Text("Home")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading)
+                            .padding(.top,10)
+                            .background(.background)
+                            
+                        Spacer()
+                    }
+                    CameraBar(
+                        selectedTab: $selectedTab,
+
+                    ).offset(y:15)
+
+                }.navigationDestination(for: InterestModel.self) { interest in
+                    InteresetView(repo: repo, interest: interest)
+                }
+            }
+        }
+
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView(
+//        selectedTab: .constant(0),
+//        isEarningsEntryViewShown: .constant(false)
+//    )
+//}
+

@@ -13,11 +13,11 @@ struct EmptyHome: View {
             Image(systemName: "person.fill.questionmark")
                 .resizable()
                 .frame(width: 200, height: 150)
-                .foregroundStyle(Color.secondary)
+                .foregroundStyle(Color.accent)
             Text("Have you met anyone?")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.secondary)
+                .foregroundColor(.accent)
         }
         
     }

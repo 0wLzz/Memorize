@@ -11,27 +11,25 @@ struct InterestCard: View {
     
     var interest: InterestModel
     var body: some View {
-        Button(action: {}) {
-            HStack {
-                Image(systemName: interest.icon)
-                    .resizable()
-                    .frame(width: 50, height: 40)
-                    .foregroundColor(Color.white)
-                    .padding(3)
-                Text(interest.name)
-                    .scaledToFit()
-                    .controlSize(.large)
-                    .foregroundColor(Color.white)
-            }
-                            .background(
-                                Rectangle()
-                                    .fill(Color.secondary)
-                                    .frame(width: 200, height: 100)
-                                    .cornerRadius(10)
-                            )
-                    }
+                HStack {
+                    Image(systemName: interest.icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.white)
+                        .padding(3)
+                    Text(interest.name)
+                        .scaledToFit()
+                        .foregroundColor(.white)
                 }
-            }
+                .frame(maxWidth: .infinity, minHeight: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.accent)
+                )
+            .frame(height: 80)
+        }
+}
 
 #Preview {
     InterestCard(interest: InterestModel.interests[0])

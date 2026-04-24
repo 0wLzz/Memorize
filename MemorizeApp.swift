@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct MemorizeApp: App {
+    @StateObject private var repo = PersonRepository()
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            ContentView()
+                .environmentObject(repo)
         }
     }
 }
