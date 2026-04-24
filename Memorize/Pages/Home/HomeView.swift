@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct HomeView: View {
-    // setting up the ingredients for the home page
-    @State private var people: [PersonModel] = PersonModel.people
-    @State private var interests: [InterestModel] = InterestModel.interests
-    var metToday: [PersonModel] { people }
+    @EnvironmentObject var repo: PersonRepository
+    @Binding var people: [PersonModel]
+    @Binding var metToday: [PersonModel]
+    @State var interests: [InterestModel]
     var favorites: [PersonModel] { [] }
+
+    @Binding var selectedTab : Int
+
+
+    init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
+        self._people = people
+        self._metToday = people
+        self.interests = InterestModel.interests
+        self._selectedTab = selectedTab
+    }
 
     // grid setting for lazyHgrid and lazyVgrid
     private let hColumns = [GridItem(.adaptive(minimum: 90))]
@@ -22,8 +32,6 @@ struct HomeView: View {
     ]
 
     // add status for CameraBar
-    @Binding var selectedTab: Int
-
     private struct SectionHeader: View {
         let title: String
         var body: some View {
@@ -34,13 +42,13 @@ struct HomeView: View {
     }
 
     var body: some View {
-
         // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
         if people.isEmpty {
             ZStack {
                 EmptyHome()
                 CameraBar(
                     selectedTab: $selectedTab,
+
                 ).offset(y:15)
             }
         } else {
@@ -48,15 +56,18 @@ struct HomeView: View {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 5) {
-                            //// People You've Met Section
+                            
+                            /// People You've Met Section
                             SectionHeader(title: "People You've Met")
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: -3) {
-                                    ForEach(metToday, id: \.id) { person in
+                                    ForEach($metToday, id: \.id) { $person in
                                         NavigationLink {
-                                            PersonDetailView(person: person)
+                                            PersonDetailView(person: $person)
                                         } label: {
-                                            PersonCard(person: person)
+                                            PersonCard(
+                                                person: $person.wrappedValue
+                                            )
                                         }
 
                                     }
@@ -64,7 +75,8 @@ struct HomeView: View {
                                 }
                             }
                             Divider().padding(.horizontal)
-                            //// Favorites Section
+                            
+                            /// Favorites Section
                             SectionHeader(title: "Favorites")
                             if favorites.isEmpty {
                                 Text(":(")
@@ -73,13 +85,18 @@ struct HomeView: View {
                             } else {
 
                             }
+                            
                             Divider().padding(.horizontal)
                             SectionHeader(title: "Interests")
                                 .padding(.vertical)
+                            
                             LazyVGrid(columns: vColumns) {
                                 ForEach(interests, id: \.id) { interest in
                                     NavigationLink {
-                                        InteresetView(interest: interest)
+                                        InteresetView(
+                                            repo: repo,
+                                            interest: interest
+                                        )
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
@@ -102,11 +119,11 @@ struct HomeView: View {
                     }
                     CameraBar(
                         selectedTab: $selectedTab,
+
                     ).offset(y:15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
-                    InteresetView(interest: interest)
-
+                    InteresetView(repo: repo, interest: interest)
                 }
             }
         }
@@ -114,8 +131,3 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView(
-        selectedTab: .constant(0),
-    )
-}

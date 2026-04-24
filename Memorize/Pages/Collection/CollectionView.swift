@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct CollectionView: View {
+    @EnvironmentObject var repo : PersonRepository
+    
     @Binding var selectedTab: Int
 
-    let people: [PersonModel] = PersonModel.people
 
     private let columns = [
         GridItem(.fixed(160), spacing: 16),
@@ -22,11 +23,11 @@ struct CollectionView: View {
             ZStack {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 8) {
-                        ForEach(people) { person in
+                        ForEach($repo.persons) { $person in
                             NavigationLink {
-                                PersonDetailView(person: person)
+                                PersonDetailView(person: $person)
                             } label: {
-                                PersonCard(person: person)
+                                PersonCard(person: $person.wrappedValue)
                             }
                         }
                     }

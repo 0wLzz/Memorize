@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CameraBar: View {
     @Binding var selectedTab: Int
+
     var body: some View {
         ZStack{
             UnevenRoundedRectangle(topLeadingRadius: 0,

@@ -9,11 +9,17 @@ import Combine
 import Foundation
 
 final class InterestViewModel: ObservableObject {
+    @Published var persons: [PersonModel] = []
     @Published var searchQuery: String = ""
 
+    init(repo: PersonRepository) {
+        repo.$persons
+            .assign(to: &$persons)
+    }
+
     func filteredPeople(for interest: InterestModel) -> [PersonModel] {
-        let byInterest = PersonModel.people.filter {
-            $0.interest?.name == interest.name
+        let byInterest = persons.filter {
+            $0.interest.name == interest.name
         }
 
         if searchQuery.isEmpty {
@@ -23,5 +29,4 @@ final class InterestViewModel: ObservableObject {
             $0.name.localizedCaseInsensitiveContains(searchQuery)
         }
     }
-
 }
