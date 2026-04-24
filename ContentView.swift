@@ -8,20 +8,19 @@
 import SwiftUI
 struct ContentView: View {
     @State private var selectedTab = 0
-    @State private var isEarningsEntryViewShown = false
 
     var body: some View {
                 // Swap content based on selected tab
                 switch selectedTab {
                 case 0:
                     NavigationStack {
-                        HomeView(selectedTab: $selectedTab, isEarningsEntryViewShown: $isEarningsEntryViewShown)
+                        HomeView(selectedTab: $selectedTab)
                     }
                 case 1:
-                    CollectionView(selectedTab: $selectedTab, isEarningsEntryViewShown: $isEarningsEntryViewShown)
+                    CollectionView(selectedTab: $selectedTab )
                 default:
                     NavigationStack {
-                        HomeView(selectedTab: $selectedTab, isEarningsEntryViewShown: $isEarningsEntryViewShown)
+                        HomeView(selectedTab: $selectedTab)
                     }
                 }
                 

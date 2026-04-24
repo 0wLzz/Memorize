@@ -9,8 +9,6 @@ import SwiftUI
 
 struct CameraBar: View {
     @Binding var selectedTab: Int
-    @Binding var isEarningsEntryViewShown: Bool
-    
     var body: some View {
         ZStack{
             UnevenRoundedRectangle(topLeadingRadius: 0,
@@ -40,5 +38,5 @@ struct CameraBar: View {
 }
 
 #Preview(traits: .sizeThatFitsLayout) {
-    CameraBar(selectedTab: .constant(0), isEarningsEntryViewShown: .constant(false))
+    CameraBar(selectedTab: .constant(0))
 }

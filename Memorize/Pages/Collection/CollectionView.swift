@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CollectionView: View {
     @Binding var selectedTab: Int
-    @Binding var isEarningsEntryViewShown: Bool
 
     let people: [PersonModel] = PersonModel.people
 
@@ -35,7 +34,7 @@ struct CollectionView: View {
                     
                 }
                 VStack{
-                    Text("Collections")
+                    Text("Collection")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -47,7 +46,6 @@ struct CollectionView: View {
                 }
                 CameraBar(
                     selectedTab: $selectedTab,
-                    isEarningsEntryViewShown: $isEarningsEntryViewShown
                 ).offset(y:15)
 
             }
@@ -58,6 +56,5 @@ struct CollectionView: View {
 #Preview {
     CollectionView(
         selectedTab: .constant(1),
-        isEarningsEntryViewShown: .constant(false)
     )
 }

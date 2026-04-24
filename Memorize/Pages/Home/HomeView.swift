@@ -23,7 +23,6 @@ struct HomeView: View {
 
     // add status for CameraBar
     @Binding var selectedTab: Int
-    @Binding var isEarningsEntryViewShown: Bool
 
     private struct SectionHeader: View {
         let title: String
@@ -40,6 +39,9 @@ struct HomeView: View {
         if people.isEmpty {
             ZStack {
                 EmptyHome()
+                CameraBar(
+                    selectedTab: $selectedTab,
+                ).offset(y:15)
             }
         } else {
             NavigationStack {
@@ -100,7 +102,6 @@ struct HomeView: View {
                     }
                     CameraBar(
                         selectedTab: $selectedTab,
-                        isEarningsEntryViewShown: $isEarningsEntryViewShown
                     ).offset(y:15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
@@ -116,6 +117,5 @@ struct HomeView: View {
 #Preview {
     HomeView(
         selectedTab: .constant(0),
-        isEarningsEntryViewShown: .constant(false)
     )
 }
