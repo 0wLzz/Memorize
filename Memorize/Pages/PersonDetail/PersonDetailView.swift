@@ -145,7 +145,13 @@ struct PersonDetailView: View {
 
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink {
-                        EditPersonView(person: $person)
+                        AddPersonView(
+                            existingPerson: Binding(
+                                get: { person },
+                                set: { person = $0 ?? person }
+                            ),
+                            image: person.profileImage ?? UIImage()
+                        )
                     }
                     label: {
                         Image(systemName: "pencil")

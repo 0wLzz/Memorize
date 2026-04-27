@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct InterestSheet: View {
-    @Binding var text: String
     @Environment(\.dismiss) var dismiss
+    
     @State private var showAddField: Bool = false
     @State private var newInterestName: String = ""
+    @Binding var text: String
     @Binding var options: [InterestModel]
 
     var filteredOptions: [InterestModel] {
