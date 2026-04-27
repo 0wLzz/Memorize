@@ -93,10 +93,12 @@ struct AddPersonView: View {
                                 set: { draft.notes = $0 }
                             )
                         )
+                        .foregroundStyle(.primary)
                         .frame(height: 100)
                         .scrollContentBackground(.hidden)
                         .background(Color(.secondarySystemBackground))
                         .padding(.leading, )
+                        
 
                         if (draft.notes ?? "").isEmpty {
                             Text("Notes")
@@ -241,7 +243,7 @@ struct AddPersonView: View {
 
                     Divider().frame(height: 55)
                     TextField(
-                        "Discord Link",
+                        "Instagram Username",
                         text: Binding(
                             get: {
                                 draft.contacts.Instagram ?? ""

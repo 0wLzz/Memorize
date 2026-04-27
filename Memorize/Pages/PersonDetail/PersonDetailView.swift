@@ -30,14 +30,11 @@ struct PersonDetailView: View {
                                 )
                                 .clipped()
                                 .overlay(
-                                    Rectangle()
-                                        .fill(.ultraThinMaterial)
-                                        .mask(
-                                            LinearGradient(colors: [
-                                                Color(.clear),
-                                                Color(.black)
-                                            ], startPoint: .center, endPoint: .bottom)
-                                        )
+                                    LinearGradient(
+                                        colors: [.clear, Color(.systemBackground)],  // ← adapts to dark/light
+                                        startPoint: .center,
+                                        endPoint: .bottom
+                                    )
                                 )
                             .frame(
                                 width: geo.size.width,
@@ -50,7 +47,12 @@ struct PersonDetailView: View {
                             Text(person.name)
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.primary)
+                            
+                            Text(person.interest.name)
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
 
                             // Contacts
                             HStack(spacing: 40) {
@@ -96,7 +98,6 @@ struct PersonDetailView: View {
                             }
 
                         }
-                        .foregroundStyle(.black)
                         .padding()
 
                     }
@@ -105,7 +106,7 @@ struct PersonDetailView: View {
                     // Bio
                     Text(person.notes ?? "Helloi")
                         .font(.system(size: 13, weight: .regular))
-                        .foregroundColor(.black)
+                        .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
@@ -160,6 +161,7 @@ struct PersonDetailView: View {
 
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink {
+
                         AddPersonView(
                             existingPerson: Binding(
                                 get: { person },
