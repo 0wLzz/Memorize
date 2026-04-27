@@ -11,16 +11,13 @@ struct HomeView: View {
     @EnvironmentObject var repo: PersonRepository
     @Binding var people: [PersonModel]
     @Binding var metToday: [PersonModel]
-    @State var interests: [InterestModel]
     var favorites: [PersonModel] { [] }
 
-    @Binding var selectedTab : Int
-
+    @Binding var selectedTab: Int
 
     init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
         self._metToday = people
-        self.interests = InterestModel.interests
         self._selectedTab = selectedTab
     }
 
@@ -44,19 +41,20 @@ struct HomeView: View {
     var body: some View {
         // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
         if people.isEmpty {
-            ZStack {
-                EmptyHome()
-                CameraBar(
-                    selectedTab: $selectedTab,
+            NavigationStack {
+                ZStack {
+                    EmptyHome()
+                    CameraButton().position(x: 200, y: 733)
+                }
 
-                ).offset(y:15)
             }
+
         } else {
             NavigationStack {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 5) {
-                            
+
                             /// People You've Met Section
                             SectionHeader(title: "People You've Met")
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -75,7 +73,7 @@ struct HomeView: View {
                                 }
                             }
                             Divider().padding(.horizontal)
-                            
+
                             /// Favorites Section
                             SectionHeader(title: "Favorites")
                             if favorites.isEmpty {
@@ -85,42 +83,41 @@ struct HomeView: View {
                             } else {
 
                             }
-                            
+
                             Divider().padding(.horizontal)
                             SectionHeader(title: "Interests")
                                 .padding(.vertical)
-                            
+
                             LazyVGrid(columns: vColumns) {
-                                ForEach(interests, id: \.id) { interest in
+                                ForEach(repo.interests, id: \.id) { interest in
                                     NavigationLink {
-                                        InteresetView(
-                                            repo: repo,
-                                            interest: interest
-                                        )
+                                        InteresetView(repo: repo, interest: interest)
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
-                                }.padding(.horizontal)
+                                }
+                                .padding(.horizontal)
                             }
                         }
                         .padding(.top, 70)
-                        .padding(.leading,10)
+                        .padding(.leading, 10)
+                        .padding(.trailing, 10)
                     }
-                    VStack{
+                    VStack {
                         Text("Home")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading)
-                            .padding(.top,10)
+                            .padding(.top, 10)
                             .background(.background)
-                            
+
                         Spacer()
                     }
                     CameraBar(
                         selectedTab: $selectedTab,
 
-                    ).offset(y:15)
+                    ).offset(y: 15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
                     InteresetView(repo: repo, interest: interest)
@@ -130,4 +127,3 @@ struct HomeView: View {
 
     }
 }
-

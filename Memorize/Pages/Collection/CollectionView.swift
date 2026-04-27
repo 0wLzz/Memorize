@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct CollectionView: View {
-    @EnvironmentObject var repo : PersonRepository
-    
-    @Binding var selectedTab: Int
+    @EnvironmentObject var repo: PersonRepository
 
+    @Binding var selectedTab: Int
 
     private let columns = [
         GridItem(.fixed(160), spacing: 16),
@@ -33,21 +32,23 @@ struct CollectionView: View {
                     }
                     .padding(.top, 70)
                     
+                    .padding()
+
                 }
-                VStack{
+                VStack {
                     Text("Collection")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading)
-                        .padding(.top,10)
+                        .padding(.top, 10)
                         .background(.background)
-                        
+
                     Spacer()
                 }
                 CameraBar(
                     selectedTab: $selectedTab,
-                ).offset(y:15)
+                ).offset(y: 15)
 
             }
         }

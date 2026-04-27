@@ -6,18 +6,22 @@
 //
 
 import SwiftUI
+
 struct TabBarButton: View {
     let systemImageName: String
     let fillSystemImageName: String
     let title: String
     let action: () -> Void
     var isSelected: Bool = false
-    
+
     var body: some View {
         Button(action: action) {
             VStack {
-                Image(systemName: isSelected ? fillSystemImageName : systemImageName)
-                    .font(.title)
+                Image(
+                    systemName: isSelected
+                        ? fillSystemImageName : systemImageName
+                )
+                .font(.title)
                 Text(title)
                     .font(.caption)
                     .fontWeight(.semibold)

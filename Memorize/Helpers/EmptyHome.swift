@@ -19,7 +19,7 @@ struct EmptyHome: View {
                 .fontWeight(.bold)
                 .foregroundColor(.accent)
         }
-        
+
     }
 }
 
