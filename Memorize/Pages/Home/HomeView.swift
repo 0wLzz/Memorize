@@ -11,9 +11,16 @@ struct HomeView: View {
     @EnvironmentObject var repo: PersonRepository
     @Binding var people: [PersonModel]
     @Binding var metToday: [PersonModel]
-    var favorites: [PersonModel] { [] }
-
+//    @State var interests: [InterestModel]
     @Binding var selectedTab: Int
+
+    var favoritesIndex: [Int] {
+        Array(
+            people.indices
+                .filter { people[$0].isFavorite }
+                .prefix(5)
+        )
+    }
 
     init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
@@ -46,7 +53,6 @@ struct HomeView: View {
                     EmptyHome()
                     CameraButton().position(x: 200, y: 733)
                 }
-
             }
 
         } else {
@@ -76,12 +82,21 @@ struct HomeView: View {
 
                             /// Favorites Section
                             SectionHeader(title: "Favorites")
-                            if favorites.isEmpty {
-                                Text(":(")
+                            if favoritesIndex.isEmpty {
+                                Text("Add a Favorite Person!")
                                     .foregroundStyle(Color.secondary)
                                     .padding()
                             } else {
-
+                                ForEach(favoritesIndex, id: \.self) { i in
+                                    NavigationLink {
+                                        PersonDetailView(person: $people[i])
+                                    } label: {
+                                        PersonCard(
+                                            person: $people[i].wrappedValue
+                                        )
+                                    }
+                                    .padding()
+                                }
                             }
 
                             Divider().padding(.horizontal)
@@ -91,7 +106,9 @@ struct HomeView: View {
                             LazyVGrid(columns: vColumns) {
                                 ForEach(repo.interests, id: \.id) { interest in
                                     NavigationLink {
-                                        InteresetView(repo: repo, interest: interest)
+                                        InteresetView(
+                                            interest: interest
+                                        )
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
@@ -120,7 +137,7 @@ struct HomeView: View {
                     ).offset(y: 15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
-                    InteresetView(repo: repo, interest: interest)
+                    InteresetView(interest: interest)
                 }
             }
         }

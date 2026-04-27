@@ -2,16 +2,18 @@
 //  InterestSheet.swift
 //  Memorize
 //
-//  Created by Hans Hartowidjojo on 24/04/26.
+
+//  Created by Owen Limantoro on 24/04/26.
 //
 
 import SwiftUI
 
 struct InterestSheet: View {
-    @Binding var text: String
     @Environment(\.dismiss) var dismiss
+    
     @State private var showAddField: Bool = false
     @State private var newInterestName: String = ""
+    @Binding var text: String
     @Binding var options: [InterestModel]
 
     var filteredOptions: [InterestModel] {
@@ -127,5 +129,4 @@ struct InterestSheet: View {
 
 #Preview {
     InterestSheet(text: .constant("Test"), options: .constant(InterestModel.interests))
-    }
-
+}

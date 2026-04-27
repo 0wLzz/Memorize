@@ -5,36 +5,55 @@
 //  Created by Owen Limantoro on 21/04/26.
 //
 
-import SwiftUI
 import Photos
 import PhotosUI
-
-
+import SwiftUI
 
 struct AddPersonView: View {
     @EnvironmentObject var repo: PersonRepository
     @Environment(\.dismiss) private var dismiss
+
     @State var text: String = ""
     @State private var showList: Bool = false
 
-    @State var newPerson = PersonModel(
-        name: "",
-        imageName: "",
-        interest: InterestModel.interests[0],
-        contacts: ContactsModel(
-            WhatsApp: nil,
-            Instagram: nil,
-            Email: nil,
-            Discord: nil
-        )
-    )
-    
-    func onSave(image: UIImage) {
-        newPerson.profileImage = image
-        repo.persons.append(newPerson)
-    }
-    
+    @Binding var existingPerson: PersonModel?
+    @State var draft: PersonModel
     var image: UIImage
+
+    init(
+        existingPerson: Binding<PersonModel?> = .constant(nil),
+        image: UIImage
+    ) {
+        self._existingPerson = existingPerson
+        self.image = image
+
+        self._draft = State(
+            initialValue: existingPerson.wrappedValue
+                ?? PersonModel(
+                    name: "",
+                    interest: InterestModel.interests[0],
+                    contacts: ContactsModel(
+                        WhatsApp: nil,
+                        Instagram: nil,
+                        Email: nil,
+                        Discord: nil
+                    )
+                )
+        )
+    }
+
+    func onSave(image: UIImage) {
+        draft.profileImage = image
+
+        if let existing = existingPerson,
+            let index = repo.persons.firstIndex(where: { $0.id == existing.id })
+        {
+            repo.persons[index] = draft
+        }
+        else {
+            repo.persons.append(draft)
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -62,53 +81,57 @@ struct AddPersonView: View {
                         }
                         .offset(x: 75, y: 75)
                     }
-                VStack{
+                VStack {
 
-                        TextField("What's their name?", text: $newPerson.name)
-    
-                   .padding(18)
+                    TextField("What's their name?", text: $draft.name)
+
+                        .padding(18)
                     Divider()
                     ZStack(alignment: .topLeading) {
-                        TextEditor(text: Binding(
-                            get: { newPerson.notes ?? "" },
-                            set: { newPerson.notes = $0 }
-                        ))
+                        TextEditor(
+                            text: Binding(
+                                get: { draft.notes ?? "" },
+                                set: { draft.notes = $0 }
+                            )
+                        )
+                        .foregroundStyle(.primary)
                         .frame(height: 100)
                         .scrollContentBackground(.hidden)
                         .background(Color(.secondarySystemBackground))
                         .padding(.leading, )
+                        
 
-                        if (newPerson.notes ?? "").isEmpty {
+                        if (draft.notes ?? "").isEmpty {
                             Text("Notes")
                                 .font(.system(.callout, design: .rounded))
                                 .foregroundColor(Color(.placeholderText))
                                 .padding(.top, 8)
                                 .padding(.leading, 18)
-                                .allowsHitTesting(false) // 👈 lets taps pass through to TextEditor
+                                .allowsHitTesting(false)
                         }
                     }
 
                 }.background(Color(.secondarySystemBackground))
-                    
+
                     .cornerRadius(15)
-                
-                
 
                 /// Interest Field
                 HStack {
                     Text("Interest")
-            
+
                     Divider()
                         .frame(height: 24)
-                    
-                    Text(text == "" ? "Select or add new" : text)
+
+                    Text(draft.interest.name == "" ? "Select or add new" : draft.interest.name)
                         .foregroundStyle(.accent)
                         .onTapGesture {
                             showList = true
                         }
-                        .onChange(of: text) { _, newValue in
-                            if let match = repo.interests.first(where: { $0.name == newValue }) {
-                                newPerson.interest = match
+                        .onChange(of: draft.interest.name) { _, newValue in
+                            if let match = repo.interests.first(where: {
+                                $0.name == newValue
+                            }) {
+                                draft.interest = match
                             }
                         }
 
@@ -119,40 +142,38 @@ struct AddPersonView: View {
                 .background(Color(.secondarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .sheet(isPresented: $showList) {
-                    InterestSheet(text: $text, options: $repo.interests)
+                    InterestSheet(text: $draft.interest.name, options: $repo.interests)
                 }
-            
-                
-                    /// WhatsApp Field
-                    HStack {
-                        Image("Whatsapp")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                            .clipShape(Circle())
-                            .padding(.leading, 10)
-                           
-                            .padding(.top, 10)
-                            .padding(.bottom, 10)
 
-                        Divider().frame(height: 55)
-                        TextField(
-                            "WhatsApp Number",
-                            text: Binding(
-                                get: {
-                                    newPerson.contacts.WhatsApp ?? ""
-                                },
-                                set: {
-                                    newPerson.contacts.WhatsApp = $0
-                                }
-                            )
+                /// WhatsApp Field
+                HStack {
+                    Image("Whatsapp")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
+                        .clipShape(Circle())
+                        .padding(.leading, 10)
+
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
+
+                    Divider().frame(height: 55)
+                    TextField(
+                        "WhatsApp Number",
+                        text: Binding(
+                            get: {
+                                draft.contacts.WhatsApp ?? ""
+                            },
+                            set: {
+                                draft.contacts.WhatsApp = $0
+                            }
                         )
-                
-                    }.background(Color(.secondarySystemBackground))
+                    )
+
+                }.background(Color(.secondarySystemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
 
-
-                    /// Discord Field
+                /// Discord Field
                 HStack {
                     Image("Discord")
                         .resizable()
@@ -161,27 +182,25 @@ struct AddPersonView: View {
                         .background(Color(.white))
                         .clipShape(Circle())
                         .padding(.leading, 10)
-          
+
                         .padding(.top, 10)
                         .padding(.bottom, 10)
-                    
 
                     Divider().frame(height: 55)
                     TextField(
                         "Discord Link",
                         text: Binding(
                             get: {
-                                newPerson.contacts.Discord ?? ""
+                                draft.contacts.Discord ?? ""
                             },
                             set: {
-                                newPerson.contacts.Discord = $0
+                                draft.contacts.Discord = $0
                             }
                         )
                     )
-            
+
                 }.background(Color(.secondarySystemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 /// Mail Field
                 HStack {
@@ -191,7 +210,7 @@ struct AddPersonView: View {
                         .frame(width: 45, height: 45)
                         .clipShape(Circle())
                         .padding(.leading, 10)
-                        
+
                         .padding(.top, 10)
                         .padding(.bottom, 10)
 
@@ -200,16 +219,16 @@ struct AddPersonView: View {
                         "Email",
                         text: Binding(
                             get: {
-                                newPerson.contacts.Email ?? ""
+                                draft.contacts.Email ?? ""
                             },
                             set: {
-                                newPerson.contacts.Email = $0
+                                draft.contacts.Email = $0
                             }
                         )
                     )
-            
+
                 }.background(Color(.secondarySystemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 /// Instagram Field
                 HStack {
@@ -219,7 +238,7 @@ struct AddPersonView: View {
                         .frame(width: 45, height: 45)
                         .clipShape(Circle())
                         .padding(.leading, 10)
-                        
+
                         .padding(.top, 10)
                         .padding(.bottom, 10)
 
@@ -228,35 +247,31 @@ struct AddPersonView: View {
                         "Instagram Username",
                         text: Binding(
                             get: {
-                                newPerson.contacts.Instagram ?? ""
+                                draft.contacts.Instagram ?? ""
                             },
                             set: {
-                                newPerson.contacts.Instagram = $0
+                                draft.contacts.Instagram = $0
                             }
                         )
                     )
-            
+
                 }.background(Color(.secondarySystemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            }
-            .padding(16)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        dismiss()
-                        onSave(image: image
-                        )
-                    } label: {
-                        Image(systemName: "checkmark")
-                    }
+        }
+        .padding(16)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    dismiss()
+                    onSave(
+                        image: image
+                    )
+                } label: {
+                    Image(systemName: "checkmark")
                 }
             }
         }
-
     }
 
-#Preview {
-    AddPersonView(image: UIImage(systemName: "person.fill")!)
-        .environmentObject(PersonRepository())
 }

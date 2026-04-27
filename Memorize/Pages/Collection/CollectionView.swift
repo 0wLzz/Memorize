@@ -31,8 +31,8 @@ struct CollectionView: View {
                         }
                     }
                     .padding(.top, 70)
-                    
-                    .padding()
+                    .padding(.leading, 10)
+                    .padding(.trailing, 10)
 
                 }
                 VStack {
