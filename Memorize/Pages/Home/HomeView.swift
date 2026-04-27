@@ -11,16 +11,20 @@ struct HomeView: View {
     @EnvironmentObject var repo: PersonRepository
     @Binding var people: [PersonModel]
     @Binding var metToday: [PersonModel]
-    @State var interests: [InterestModel]
-    var favorites: [PersonModel] { [] }
+//    @State var interests: [InterestModel]
+    @Binding var selectedTab: Int
 
-    @Binding var selectedTab : Int
-
+    var favoritesIndex: [Int] {
+        Array(
+            people.indices
+                .filter { people[$0].isFavorite }
+                .prefix(5)
+        )
+    }
 
     init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
         self._metToday = people
-        self.interests = InterestModel.interests
         self._selectedTab = selectedTab
     }
 
@@ -31,7 +35,7 @@ struct HomeView: View {
         GridItem(.flexible(), spacing: 10),
     ]
 
-
+    // add status for CameraBar
     private struct SectionHeader: View {
         let title: String
         var body: some View {
@@ -44,19 +48,19 @@ struct HomeView: View {
     var body: some View {
         // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
         if people.isEmpty {
-            ZStack {
-                EmptyHome()
-                CameraBar(
-                    selectedTab: $selectedTab,
-
-                ).offset(y:15)
+            NavigationStack {
+                ZStack {
+                    EmptyHome()
+                    CameraButton().position(x: 200, y: 733)
+                }
             }
+
         } else {
             NavigationStack {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 5) {
-                            
+
                             /// People You've Met Section
                             SectionHeader(title: "People You've Met")
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -75,66 +79,68 @@ struct HomeView: View {
                                 }
                             }
                             Divider().padding(.horizontal)
-                            
+
                             /// Favorites Section
                             SectionHeader(title: "Favorites")
-                            if favorites.isEmpty {
-                                Text(":(")
+                            if favoritesIndex.isEmpty {
+                                Text("Add a Favorite Person!")
                                     .foregroundStyle(Color.secondary)
                                     .padding()
                             } else {
-
+                                ForEach(favoritesIndex, id: \.self) { i in
+                                    NavigationLink {
+                                        PersonDetailView(person: $people[i])
+                                    } label: {
+                                        PersonCard(
+                                            person: $people[i].wrappedValue
+                                        )
+                                    }
+                                    .padding()
+                                }
                             }
-                            
+
                             Divider().padding(.horizontal)
                             SectionHeader(title: "Interests")
                                 .padding(.vertical)
-                            
+
                             LazyVGrid(columns: vColumns) {
-                                ForEach(interests, id: \.id) { interest in
+                                ForEach(repo.interests, id: \.id) { interest in
                                     NavigationLink {
                                         InteresetView(
-                                            repo: repo,
                                             interest: interest
                                         )
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
-                                }.padding(.horizontal)
+                                }
+                                .padding(.horizontal)
                             }
                         }
                         .padding(.top, 70)
-                        .padding(.leading,10)
+                        .padding(.leading, 10)
+                        .padding(.trailing, 10)
                     }
-                    VStack{
+                    VStack {
                         Text("Home")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading)
-                            .padding(.top,10)
+                            .padding(.top, 10)
                             .background(.background)
-                            
+
                         Spacer()
                     }
                     CameraBar(
                         selectedTab: $selectedTab,
 
-                    ).offset(y:15)
+                    ).offset(y: 15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
-                    InteresetView(repo: repo, interest: interest)
+                    InteresetView(interest: interest)
                 }
             }
         }
 
     }
 }
-
-//#Preview {
-//    HomeView(
-//        selectedTab: .constant(0),
-//        isEarningsEntryViewShown: .constant(false)
-//    )
-//}
-

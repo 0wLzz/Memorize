@@ -11,10 +11,10 @@ struct ContactsModel {
     var WhatsApp: String?
     var Instagram: String?
     var Email: String?
-    var Discrod: String?
+    var Discord: String?
     
     
-    #if DEBUG
-    static let contactsExample = ContactsModel(WhatsApp: "Owen", Instagram: "Owen", Email: "hansandowen@gmail.com", Discrod: "What")
-    #endif
+//    #if DEBUG
+//    static let contactsExample = ContactsModel(WhatsApp: "Owen", Instagram: "Owen", Email: "hansandowen@gmail.com", Discrod: "What")
+//    #endif
 }

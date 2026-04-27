@@ -27,34 +27,32 @@ struct CameraButton: View {
     @State private var goToEdit = false  // Should go to edit or no
 
     var body: some View {
-        NavigationStack {
-            Button(action: { ShowingCamera = true }) {
-                Image(systemName: "camera")
-                    .scaledToFit()
-                    .font(.system(size: 40))
-                    .foregroundColor(Color.white)
-                    .background(
-                        Circle().fill(Color.accent).frame(
-                            width: 90,
-                            height: 90
-                        )
+        Button(action: { ShowingCamera = true }) {
+            Image(systemName: "camera")
+                .scaledToFit()
+                .font(.system(size: 40))
+                .foregroundColor(Color.white)
+                .background(
+                    Circle().fill(Color.accent).frame(
+                        width: 90,
+                        height: 90
                     )
-            }
-            .buttonStyle(DarkenButtonStyle())
-            .fullScreenCover(isPresented: $ShowingCamera) {
-                CameraView(
-                    image: $selectedImage,
-                    onImageCaptured: {
-                        goToEdit = true
-                    }
                 )
-                .ignoresSafeArea()
-                .frame(width: 402, height: 874)
-            }
-            .navigationDestination(isPresented: $goToEdit) {
-                if let image = selectedImage {
-                    AddPersonView(image: image)
+        }
+        .buttonStyle(DarkenButtonStyle())
+        .fullScreenCover(isPresented: $ShowingCamera) {
+            CameraView(
+                image: $selectedImage,
+                onImageCaptured: {
+                    goToEdit = true
                 }
+            )
+            .ignoresSafeArea()
+            .frame(width: 402, height: 874)
+        }
+        .navigationDestination(isPresented: $goToEdit) {
+            if let image = selectedImage {
+                AddPersonView(image: image)
             }
         }
     }

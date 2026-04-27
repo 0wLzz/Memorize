@@ -8,17 +8,11 @@
 import SwiftUI
 
 struct InteresetView: View {
-    @StateObject private var interestViewModel: InterestViewModel
+    @EnvironmentObject var repo: PersonRepository
     let interest: InterestModel
-    
-    init(repo: PersonRepository, interest: InterestModel) {
-        _interestViewModel = StateObject(wrappedValue: InterestViewModel(repo: repo))
-        self.interest = interest
-    }
-    
     var filteredPeopleIndex: [Int] {
-        interestViewModel.persons.indices.filter {
-            interestViewModel.persons[$0].interest == interest
+        repo.persons.indices.filter {
+            repo.persons[$0].interest == interest
         }
     }
 
@@ -34,14 +28,14 @@ struct InteresetView: View {
                     // Filter the index not the people itself
                     ForEach(filteredPeopleIndex, id: \.self) { index in
                         NavigationLink {
-                            PersonDetailView(person: $interestViewModel.persons[index])
+                            PersonDetailView(person: $repo.persons[index])
                         } label: {
-                            PersonCard(person: interestViewModel.persons[index])
+                            PersonCard(person: repo.persons[index])
                         }
                     }
                 }
             }
-//            .searchable(text: $interestViewModel.searchQuery)
+            //            .searchable(text: $interestViewModel.searchQuery)
             .navigationTitle(interest.name)  // shows the interest name
             .padding(15)
         }

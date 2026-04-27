@@ -14,17 +14,12 @@ struct ContentView: View {
     var body: some View {
         switch selectedTab {
         case 0:
-            NavigationStack {
-                HomeView(people: $repo.persons, selectedTab: $selectedTab)
-            }
+            HomeView(people: $repo.persons, selectedTab: $selectedTab)
         case 1:
             CollectionView(repo: _repo, selectedTab: $selectedTab)
 
         default:
-            NavigationStack {
-
-                HomeView(people: $repo.persons, selectedTab: $selectedTab)
-            }
+            HomeView(people: $repo.persons, selectedTab: $selectedTab)
         }
     }
 }

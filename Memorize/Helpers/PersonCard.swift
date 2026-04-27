@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PersonCard: View {
     var person: PersonModel
-    
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -18,7 +17,7 @@ struct PersonCard: View {
                     .resizable()
                     .scaledToFit()
             }
-            
+
             Rectangle()
                 .frame(height: 70)
                 .opacity(0.9)
@@ -43,7 +42,7 @@ struct PersonCard: View {
         }
         .frame(width: 150, height: 170)
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        
+
     }
 }
 
