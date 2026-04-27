@@ -21,7 +21,12 @@ struct AddPersonView: View {
         name: "",
         imageName: "",
         interest: InterestModel.interests[0],
-        contacts: ContactsModel.contactsExample
+        contacts: ContactsModel(
+            WhatsApp: nil,
+            Instagram: nil,
+            Email: nil,
+            Discord: nil
+        )
     )
     
     func onSave(image: UIImage) {
@@ -116,178 +121,123 @@ struct AddPersonView: View {
                 .sheet(isPresented: $showList) {
                     InterestSheet(text: $text, options: $repo.interests)
                 }
+            
                 
-                /// Notes Field
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Notes")
-                        .font(.system(.headline, design: .rounded))
+                    /// WhatsApp Field
+                    HStack {
+                        Image("Whatsapp")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 45, height: 45)
+                            .clipShape(Circle())
+                            .padding(.leading, 10)
+                           
+                            .padding(.top, 10)
+                            .padding(.bottom, 10)
 
-                    ZStack {
-                        Rectangle()
-                            .fill(.white)
-                            .frame(width: .infinity, height: 35)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color.gray, lineWidth: 1)
-
-                                TextField(
-                                    "Notes",
-                                    text: Binding(
-                                        get: { newPerson.notes ?? "" },
-                                        set: { newPerson.notes = $0 }
-                                    )
-                                )
-                                .padding(8)
-                            }
-                    }
-                }
-
-                /// WhatsApp Field
-                HStack {
-                    Image("Whatsapp")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Whatsapp")
-                            .font(.system(.headline, design: .rounded))
-
-                        ZStack {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: .infinity, height: 35)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(Color.gray, lineWidth: 1)
-
-                                    TextField(
-                                        "Whatsapp Link",
-                                        text: Binding(
-                                            get: {
-                                                newPerson.contacts.WhatsApp
-                                                    ?? ""
-                                            },
-                                            set: {
-                                                newPerson.contacts.WhatsApp = $0
-                                            }
-                                        )
-                                    )
-                                    .padding(8)
+                        Divider().frame(height: 55)
+                        TextField(
+                            "WhatsApp Number",
+                            text: Binding(
+                                get: {
+                                    newPerson.contacts.WhatsApp ?? ""
+                                },
+                                set: {
+                                    newPerson.contacts.WhatsApp = $0
                                 }
-                        }
-                    }
-                }
+                            )
+                        )
+                
+                    }.background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                /// Discord Field
+
+                    /// Discord Field
                 HStack {
                     Image("Discord")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
+                        .background(Color(.white))
                         .clipShape(Circle())
+                        .padding(.leading, 10)
+          
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
+                    
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Discord")
-                            .font(.system(.headline, design: .rounded))
-
-                        ZStack {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: .infinity, height: 35)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(Color.gray, lineWidth: 1)
-
-                                    TextField(
-                                        "Discord Link",
-                                        text: Binding(
-                                            get: {
-                                                newPerson.contacts.Discrod ?? ""
-                                            },
-                                            set: {
-                                                newPerson.contacts.Discrod = $0
-                                            }
-                                        )
-                                    )
-                                    .padding(8)
-                                }
-                        }
-                    }
-                }
+                    Divider().frame(height: 55)
+                    TextField(
+                        "Discord Link",
+                        text: Binding(
+                            get: {
+                                newPerson.contacts.Discord ?? ""
+                            },
+                            set: {
+                                newPerson.contacts.Discord = $0
+                            }
+                        )
+                    )
+            
+                }.background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
 
                 /// Mail Field
                 HStack {
                     Image("Mail")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
                         .clipShape(Circle())
+                        .padding(.leading, 10)
+                        
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Mail")
-                            .font(.system(.headline, design: .rounded))
-
-                        ZStack {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: .infinity, height: 35)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(Color.gray, lineWidth: 1)
-
-                                    TextField(
-                                        "Email",
-                                        text: Binding(
-                                            get: {
-                                                newPerson.contacts.Email ?? ""
-                                            },
-                                            set: {
-                                                newPerson.contacts.Email = $0
-                                            }
-                                        )
-                                    )
-                                    .padding(8)
-                                }
-                        }
-                    }
-                }
+                    Divider().frame(height: 55)
+                    TextField(
+                        "Email",
+                        text: Binding(
+                            get: {
+                                newPerson.contacts.Email ?? ""
+                            },
+                            set: {
+                                newPerson.contacts.Email = $0
+                            }
+                        )
+                    )
+            
+                }.background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 /// Instagram Field
                 HStack {
                     Image("Instagram")
                         .resizable()
-                        .frame(width: 50, height: 50)
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
                         .clipShape(Circle())
+                        .padding(.leading, 10)
+                        
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Instagram")
-                            .font(.system(.headline, design: .rounded))
-
-                        ZStack {
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: .infinity, height: 35)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(Color.gray, lineWidth: 1)
-
-                                    TextField(
-                                        "Instagram Link",
-                                        text: Binding(
-                                            get: {
-                                                newPerson.contacts.Instagram
-                                                    ?? ""
-                                            },
-                                            set: {
-                                                newPerson.contacts.Instagram =
-                                                    $0
-                                            }
-                                        )
-                                    )
-                                    .padding(8)
-                                }
-                        }
-                    }
-                }
+                    Divider().frame(height: 55)
+                    TextField(
+                        "Discord Link",
+                        text: Binding(
+                            get: {
+                                newPerson.contacts.Instagram ?? ""
+                            },
+                            set: {
+                                newPerson.contacts.Instagram = $0
+                            }
+                        )
+                    )
+            
+                }.background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             }
             .padding(16)
