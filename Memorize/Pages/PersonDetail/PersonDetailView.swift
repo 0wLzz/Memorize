@@ -54,30 +54,45 @@ struct PersonDetailView: View {
 
                             // Contacts
                             HStack(spacing: 40) {
-                                Image("Whatsapp")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipped()
-                                    .clipShape(Circle())
-
-                                Image("Discord")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipped()
-                                    .background(.white)
-                                    .clipShape(Circle())
-
-                                Image("Mail")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipped()
-                                    .clipShape(Circle())
-
-                                Image("Instagram")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .clipped()
-                                    .clipShape(Circle())
+                                Button {
+                                    person.contacts.openWhatsApp()
+                                } label: {
+                                    Image("Whatsapp")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .clipped()
+                                        .clipShape(Circle())
+                                }
+                                
+                                Button {
+                                    person.contacts.openDiscord()
+                                } label: {
+                                    Image("Discord")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .clipped()
+                                        .clipShape(Circle())
+                                }
+                                
+                                Button {
+                                    person.contacts.openEmail()
+                                } label: {
+                                    Image("Mail")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .clipped()
+                                        .clipShape(Circle())
+                                }
+                                
+                                Button {
+                                    person.contacts.openInstagram()
+                                } label : {
+                                    Image("Instagram")
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .clipped()
+                                        .clipShape(Circle())
+                                }
                             }
 
                         }

@@ -15,7 +15,7 @@ struct PersonCard: View {
             if let profileImage = person.profileImage {
                 Image(uiImage: profileImage)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
             }
 
             Rectangle()

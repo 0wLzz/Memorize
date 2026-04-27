@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct MemorizeApp: App {
-    @StateObject private var repo = PersonRepository()
-    
+    let container = try! ModelContainer(for: PersonModel.self)
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(repo)
+                .environmentObject(PersonRepository(context: container.mainContext))
         }
+        .modelContainer(container)
     }
 }

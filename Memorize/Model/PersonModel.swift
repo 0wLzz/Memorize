@@ -7,38 +7,38 @@
 
 import Foundation
 import PhotosUI
+import SwiftData
 
-struct PersonModel: Identifiable {
-    let id = UUID()
+@Model
+final class PersonModel: Identifiable {
+    var id = UUID()
     var name: String
     var notes: String?
     var pictures: [String]?
     var interest: InterestModel
     var contacts: ContactsModel
-    var profileImage : UIImage? = nil
+    var profileImageData: Data? = nil  // store as Data
     var isFavorite: Bool = false
 
+    // Computed property for convenience
+    var profileImage: UIImage? {
+        get {
+            guard let data = profileImageData else { return nil }
+            return UIImage(data: data)
+        }
+        set {
+            profileImageData = newValue?.jpegData(compressionQuality: 0.8)
+        }
+    }
 
-//    #if DEBUG
-//        static let people: [PersonModel] = [
-//            PersonModel(
-//                name: "Hans",
-//                imageName: "Hans",
-//                interest: InterestModel.interests[0],
-//                contacts: ContactsModel.contactsExample
-//            ),
-//            PersonModel(
-//                name: "John",
-//                imageName: "Hans",
-//                interest: InterestModel.interests[1],
-//                contacts: ContactsModel.contactsExample
-//            ),
-//            PersonModel(
-//                name: "Lisa",
-//                imageName: "Hans",
-//                interest: InterestModel.interests[2],
-//                contacts: ContactsModel.contactsExample
-//            ),
-//        ]
-//    #endif
+    init(id: UUID = UUID(), name: String, notes: String? = nil, pictures: [String]? = nil, interest: InterestModel, contacts: ContactsModel, profileImage: UIImage? = nil, isFavorite: Bool = false) {
+        self.id = id
+        self.name = name
+        self.notes = notes
+        self.pictures = pictures
+        self.interest = interest
+        self.contacts = contacts
+        self.profileImageData = profileImage?.jpegData(compressionQuality: 0.8)
+        self.isFavorite = isFavorite
+    }
 }

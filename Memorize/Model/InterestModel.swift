@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
-struct InterestModel: Identifiable, Hashable {
-    let id = UUID()
+@Model
+final class InterestModel: Identifiable, Hashable {
+    var id = UUID()
     var name: String
     var icon: String // Using SF Symbols
     
@@ -19,5 +21,11 @@ struct InterestModel: Identifiable, Hashable {
         InterestModel(name: "Art", icon: "paintbrush")
     ]
     //    #endif
+    
+    init(id: UUID = UUID(), name: String, icon: String) {
+        self.id = id
+        self.name = name
+        self.icon = icon
+    }
 }
 

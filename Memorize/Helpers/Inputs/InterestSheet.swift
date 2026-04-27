@@ -10,18 +10,11 @@ import SwiftUI
 
 struct InterestSheet: View {
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var showAddField: Bool = false
     @State private var newInterestName: String = ""
-    @Binding var text: String
+    @Binding var interest: String
     @Binding var options: [InterestModel]
-
-    var filteredOptions: [InterestModel] {
-        if text.isEmpty { return options }
-        return options.filter {
-            $0.name.lowercased().hasPrefix(text.lowercased())
-        }
-    }
 
     var body: some View {
         NavigationStack {
@@ -48,7 +41,7 @@ struct InterestSheet: View {
                                     icon: "star"
                                 )
                                 options.append(newItem)
-                                text = trimmed
+                                interest = trimmed
                                 dismiss()
                             }
                             .disabled(
@@ -63,9 +56,9 @@ struct InterestSheet: View {
                         Divider()
                     }
 
-                    ForEach(filteredOptions) { option in
+                    ForEach(options) { option in
                         Button {
-                            text = option.name
+                            interest = option.name
                             dismiss()
                         } label: {
                             HStack {
@@ -75,11 +68,12 @@ struct InterestSheet: View {
 
                                 Text(option.name)
                                     .font(.system(size: 16))
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.primary)
 
                                 Spacer()
 
-                                if text.lowercased() == option.name.lowercased()
+                                if interest.lowercased()
+                                    == option.name.lowercased()
                                 {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 12))
@@ -114,19 +108,23 @@ struct InterestSheet: View {
                             if !showAddField { newInterestName = "" }
                         }
                     } label: {
-                        Image(systemName: showAddField ? "minus.circle" : "plus.circle")
-                            .foregroundStyle(.accent)
+                        Image(
+                            systemName: showAddField
+                                ? "minus.circle" : "plus.circle"
+                        )
+                        .foregroundStyle(.accent)
                     }
                 }
 
             }
         }
 
-
-        }
     }
-
+}
 
 #Preview {
-    InterestSheet(text: .constant("Test"), options: .constant(InterestModel.interests))
+    InterestSheet(
+        interest: .constant("Test"),
+        options: .constant(InterestModel.interests)
+    )
 }

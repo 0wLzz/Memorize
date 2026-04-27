@@ -12,12 +12,11 @@ import SwiftUI
 struct AddPersonView: View {
     @EnvironmentObject var repo: PersonRepository
     @Environment(\.dismiss) private var dismiss
-
-    @State var text: String = ""
+    
     @State private var showList: Bool = false
+    @State var draft: PersonModel
 
     @Binding var existingPerson: PersonModel?
-    @State var draft: PersonModel
     var image: UIImage
 
     init(
@@ -140,7 +139,7 @@ struct AddPersonView: View {
                 .background(Color(.secondarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .sheet(isPresented: $showList) {
-                    InterestSheet(text: $draft.interest.name, options: $repo.interests)
+                    InterestSheet(interest: $draft.interest.name, options: $repo.interests)
                 }
 
                 /// WhatsApp Field
