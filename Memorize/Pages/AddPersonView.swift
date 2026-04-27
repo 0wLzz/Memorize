@@ -225,7 +225,7 @@ struct AddPersonView: View {
 
                     Divider().frame(height: 55)
                     TextField(
-                        "Discord Link",
+                        "Instagram Username",
                         text: Binding(
                             get: {
                                 newPerson.contacts.Instagram ?? ""

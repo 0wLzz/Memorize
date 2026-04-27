@@ -15,7 +15,9 @@ struct PersonCard: View {
             if let profileImage = person.profileImage {
                 Image(uiImage: profileImage)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
+                    .frame(width: 150, height: 170)
+                    .clipped()
             }
 
             Rectangle()
@@ -46,8 +48,4 @@ struct PersonCard: View {
     }
 }
 
-//#Preview {
-//    let boardgames = InterestModel.interests[0]
-//    let Hans = PersonModel.people[0]
-//    PersonCard(person: Hans)
-//}
+

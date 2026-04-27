@@ -73,7 +73,7 @@ struct InterestSheet: View {
 
                                 Text(option.name)
                                     .font(.system(size: 16))
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.primary)
 
                                 Spacer()
 
@@ -127,5 +127,5 @@ struct InterestSheet: View {
 
 #Preview {
     InterestSheet(text: .constant("Test"), options: .constant(InterestModel.interests))
-    
-}
+    }
+
