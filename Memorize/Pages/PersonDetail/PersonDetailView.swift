@@ -142,7 +142,7 @@ struct PersonDetailView: View {
 
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink {
-                        EditPersonView(person: $person)
+//                        EditPersonView(person: $person)
                     }
                     label: {
                         Image(systemName: "pencil")
