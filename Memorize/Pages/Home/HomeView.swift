@@ -12,10 +12,15 @@ struct HomeView: View {
     @Binding var people: [PersonModel]
     @Binding var metToday: [PersonModel]
     @State var interests: [InterestModel]
-    var favorites: [PersonModel] { [] }
+    @Binding var selectedTab: Int
 
-    @Binding var selectedTab : Int
-
+    var favoritesIndex: [Int] {
+        Array(
+            people.indices
+                .filter { people[$0].isFavorite }
+                .prefix(5)
+        )
+    }
 
     init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
@@ -30,7 +35,6 @@ struct HomeView: View {
         GridItem(.flexible(), spacing: 10),
         GridItem(.flexible(), spacing: 10),
     ]
-
 
     private struct SectionHeader: View {
         let title: String
@@ -49,14 +53,14 @@ struct HomeView: View {
                 CameraBar(
                     selectedTab: $selectedTab,
 
-                ).offset(y:15)
+                ).offset(y: 15)
             }
         } else {
             NavigationStack {
                 ZStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 5) {
-                            
+
                             /// People You've Met Section
                             SectionHeader(title: "People You've Met")
                             ScrollView(.horizontal, showsIndicators: false) {
@@ -75,26 +79,34 @@ struct HomeView: View {
                                 }
                             }
                             Divider().padding(.horizontal)
-                            
+
                             /// Favorites Section
                             SectionHeader(title: "Favorites")
-                            if favorites.isEmpty {
-                                Text(":(")
+                            if favoritesIndex.isEmpty {
+                                Text("Add a Favorite Person!")
                                     .foregroundStyle(Color.secondary)
                                     .padding()
                             } else {
-
+                                ForEach(favoritesIndex, id: \.self) { i in
+                                    NavigationLink {
+                                        PersonDetailView(person: $people[i])
+                                    } label: {
+                                        PersonCard(
+                                            person: $people[i].wrappedValue
+                                        )
+                                    }
+                                    .padding()
+                                }
                             }
-                            
+
                             Divider().padding(.horizontal)
                             SectionHeader(title: "Interests")
                                 .padding(.vertical)
-                            
+
                             LazyVGrid(columns: vColumns) {
                                 ForEach(interests, id: \.id) { interest in
                                     NavigationLink {
                                         InteresetView(
-                                            repo: repo,
                                             interest: interest
                                         )
                                     } label: {
@@ -104,26 +116,26 @@ struct HomeView: View {
                             }
                         }
                         .padding(.top, 70)
-                        .padding(.leading,10)
+                        .padding(.leading, 10)
                     }
-                    VStack{
+                    VStack {
                         Text("Home")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading)
-                            .padding(.top,10)
+                            .padding(.top, 10)
                             .background(.background)
-                            
+
                         Spacer()
                     }
                     CameraBar(
                         selectedTab: $selectedTab,
 
-                    ).offset(y:15)
+                    ).offset(y: 15)
 
                 }.navigationDestination(for: InterestModel.self) { interest in
-                    InteresetView(repo: repo, interest: interest)
+                    InteresetView(interest: interest)
                 }
             }
         }
@@ -137,4 +149,3 @@ struct HomeView: View {
 //        isEarningsEntryViewShown: .constant(false)
 //    )
 //}
-

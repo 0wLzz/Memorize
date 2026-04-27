@@ -14,7 +14,6 @@ struct AddPersonView: View {
     @Environment(\.dismiss) private var dismiss
     @State var newPerson = PersonModel(
         name: "",
-        imageName: "",
         interest: InterestModel.interests[0],
         contacts: ContactsModel.contactsExample
     )

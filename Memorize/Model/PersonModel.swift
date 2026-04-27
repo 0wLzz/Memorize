@@ -11,12 +11,13 @@ import PhotosUI
 struct PersonModel: Identifiable {
     let id = UUID()
     var name: String
-    var imageName: String
-    var interest: InterestModel
     var notes: String?
     var pictures: [String]?
+    var interest: InterestModel
     var contacts: ContactsModel
     var profileImage : UIImage? = nil
+    var isFavorite: Bool = false
+
 
 //    #if DEBUG
 //        static let people: [PersonModel] = [
