@@ -10,6 +10,7 @@ import Combine
 
 final class PersonRepository: ObservableObject {
     @Published var persons: [PersonModel]
+    @Published var interests: [InterestModel] = InterestModel.interests
     
     init() {
         #if DEBUG

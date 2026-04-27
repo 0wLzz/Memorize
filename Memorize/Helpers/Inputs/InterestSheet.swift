@@ -2,75 +2,130 @@
 //  InterestSheet.swift
 //  Memorize
 //
+
 //  Created by Owen Limantoro on 24/04/26.
 //
 
 import SwiftUI
 
 struct InterestSheet: View {
-    @Binding var text : String
+    @Binding var text: String
     @Environment(\.dismiss) var dismiss
-    @State var options: [String] = ["Apple", "Banana", "Mango Juice"]
-    
-    var filteredOptions: [String] {
-        if text.isEmpty {
-            return options
-        }
+    @State private var showAddField: Bool = false
+    @State private var newInterestName: String = ""
+    @Binding var options: [InterestModel]
 
+    var filteredOptions: [InterestModel] {
+        if text.isEmpty { return options }
         return options.filter {
-            $0.lowercased().hasPrefix(text.lowercased())
+            $0.name.lowercased().hasPrefix(text.lowercased())
         }
     }
 
-    
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(filteredOptions, id: \.self) { option in
-                    Button {
-                        text = option
-                    } label: {
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    if showAddField {
                         HStack {
-                            // Highlight matching prefix
-                            Text(option)
-                                .font(.system(size: 16))
-                                .foregroundStyle(.black)
-                            
-                            Spacer()
-                            
-                            if text.lowercased() == option.lowercased() {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 12))
+                            TextField(
+                                "New interest name",
+                                text: $newInterestName
+                            )
+                            .font(.system(size: 16))
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 11)
 
+                            Button("Add") {
+                                let trimmed =
+                                    newInterestName.trimmingCharacters(
+                                        in: .whitespacesAndNewlines
+                                    )
+                                guard !trimmed.isEmpty else { return }
+                                let newItem = InterestModel(
+                                    name: trimmed,
+                                    icon: "star"
+                                )
+                                options.append(newItem)
+                                text = trimmed
+                                dismiss()
                             }
+                            .disabled(
+                                newInterestName.trimmingCharacters(
+                                    in: .whitespacesAndNewlines
+                                ).isEmpty
+                            )
+                            .padding(.trailing, 14)
                         }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 11)
-                        .contentShape(Rectangle())
+                        .background(Color(.tertiarySystemBackground))
+
+                        Divider()
+                    }
+
+                    ForEach(filteredOptions) { option in
+                        Button {
+                            text = option.name
+                            dismiss()
+                        } label: {
+                            HStack {
+                                Image(systemName: option.icon)
+                                    .frame(width: 24)
+                                    .foregroundStyle(.secondary)
+
+                                Text(option.name)
+                                    .font(.system(size: 16))
+                                    .foregroundStyle(.black)
+
+                                Spacer()
+
+                                if text.lowercased() == option.name.lowercased()
+                                {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(.accent)
+                                }
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 11)
+                            .contentShape(Rectangle())
+                        }
                     }
                 }
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "cross")
-                        .frame(width: 32, height: 32)
-                        .background(.ultraThinMaterial)
-                        .foregroundStyle(.primary)
-                        .clipShape(Circle())
+            .navigationTitle("Interest")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .frame(width: 32, height: 32)
+                            .background(.ultraThinMaterial)
+                            .foregroundStyle(.primary)
+                            .clipShape(Circle())
+                    }
                 }
-            }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            showAddField.toggle()
+                            if !showAddField { newInterestName = "" }
+                        }
+                    } label: {
+                        Image(systemName: showAddField ? "minus.circle" : "plus.circle")
+                            .foregroundStyle(.accent)
+                    }
+                }
 
-            ToolbarItem(placement: .principal) {
-                Text("Interest")
             }
+        }
+
+
         }
     }
-}
+
 
 #Preview {
-    InterestSheet(text: .constant("Test"))
+    InterestSheet(text: .constant("Test"), options: .constant(InterestModel.interests))
 }

@@ -11,7 +11,7 @@ struct HomeView: View {
     @EnvironmentObject var repo: PersonRepository
     @Binding var people: [PersonModel]
     @Binding var metToday: [PersonModel]
-    @State var interests: [InterestModel]
+//    @State var interests: [InterestModel]
     @Binding var selectedTab: Int
 
     var favoritesIndex: [Int] {
@@ -25,7 +25,6 @@ struct HomeView: View {
     init(people: Binding<[PersonModel]>, selectedTab: Binding<Int>) {
         self._people = people
         self._metToday = people
-        self.interests = InterestModel.interests
         self._selectedTab = selectedTab
     }
 
@@ -36,6 +35,7 @@ struct HomeView: View {
         GridItem(.flexible(), spacing: 10),
     ]
 
+    // add status for CameraBar
     private struct SectionHeader: View {
         let title: String
         var body: some View {
@@ -48,13 +48,13 @@ struct HomeView: View {
     var body: some View {
         // if there's nothing in the database, use EmptyHome, if not, provide it with the REAL home page
         if people.isEmpty {
-            ZStack {
-                EmptyHome()
-                CameraBar(
-                    selectedTab: $selectedTab,
-
-                ).offset(y: 15)
+            NavigationStack {
+                ZStack {
+                    EmptyHome()
+                    CameraButton().position(x: 200, y: 733)
+                }
             }
+
         } else {
             NavigationStack {
                 ZStack {
@@ -104,7 +104,7 @@ struct HomeView: View {
                                 .padding(.vertical)
 
                             LazyVGrid(columns: vColumns) {
-                                ForEach(interests, id: \.id) { interest in
+                                ForEach(repo.interests, id: \.id) { interest in
                                     NavigationLink {
                                         InteresetView(
                                             interest: interest
@@ -112,11 +112,13 @@ struct HomeView: View {
                                     } label: {
                                         InterestCard(interest: interest)
                                     }
-                                }.padding(.horizontal)
+                                }
+                                .padding(.horizontal)
                             }
                         }
                         .padding(.top, 70)
                         .padding(.leading, 10)
+                        .padding(.trailing, 10)
                     }
                     VStack {
                         Text("Home")
@@ -142,10 +144,3 @@ struct HomeView: View {
 
     }
 }
-
-//#Preview {
-//    HomeView(
-//        selectedTab: .constant(0),
-//        isEarningsEntryViewShown: .constant(false)
-//    )
-//}

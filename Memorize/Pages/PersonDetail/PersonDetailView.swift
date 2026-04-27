@@ -88,7 +88,7 @@ struct PersonDetailView: View {
                     .ignoresSafeArea(edges: .top)
 
                     // Bio
-                    Text(person.notes ?? "")
+                    Text(person.notes ?? "Helloi")
                         .font(.system(size: 13, weight: .regular))
                         .foregroundColor(.black)
                         .multilineTextAlignment(.leading)
@@ -97,11 +97,9 @@ struct PersonDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(
                             RoundedRectangle(cornerRadius: 14)
-                                .fill(Color.white)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(Color.gray, lineWidth: 1)
+                                .fill(.ultraThinMaterial)
+                            
+                                .opacity(0.5)
                         )
                         .padding(.horizontal, 16)
 

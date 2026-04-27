@@ -9,9 +9,14 @@ import SwiftUI
 import Photos
 import PhotosUI
 
+
+
 struct AddPersonView: View {
     @EnvironmentObject var repo: PersonRepository
     @Environment(\.dismiss) private var dismiss
+    @State var text: String = ""
+    @State private var showList: Bool = false
+
     @State var newPerson = PersonModel(
         name: "",
         interest: InterestModel.interests[0],
@@ -30,6 +35,8 @@ struct AddPersonView: View {
             VStack(spacing: 16) {
                 /// Profile Edit
                 Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
                     .frame(width: 200, height: 200)
                     .clipShape(Circle())
                     .overlay {
@@ -49,47 +56,66 @@ struct AddPersonView: View {
                         }
                         .offset(x: 75, y: 75)
                     }
+                VStack{
 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Name")
-                        .font(.system(.headline, design: .rounded))
+                        TextField("What's their name?", text: $newPerson.name)
+    
+                   .padding(18)
+                    Divider()
+                    ZStack(alignment: .topLeading) {
+                        TextEditor(text: Binding(
+                            get: { newPerson.notes ?? "" },
+                            set: { newPerson.notes = $0 }
+                        ))
+                        .frame(height: 100)
+                        .scrollContentBackground(.hidden)
+                        .background(Color(.secondarySystemBackground))
+                        .padding(.leading, )
 
-                    ZStack {
-                        Rectangle()
-                            .fill(.white)
-                            .frame(width: .infinity, height: 35)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color.gray, lineWidth: 1)
-
-                                TextField("Name", text: $newPerson.name)
-                                    .padding(8)
-                            }
+                        if (newPerson.notes ?? "").isEmpty {
+                            Text("Notes")
+                                .font(.system(.callout, design: .rounded))
+                                .foregroundColor(Color(.placeholderText))
+                                .padding(.top, 8)
+                                .padding(.leading, 18)
+                                .allowsHitTesting(false) // 👈 lets taps pass through to TextEditor
+                        }
                     }
-                }
+
+                }.background(Color(.secondarySystemBackground))
+                    
+                    .cornerRadius(15)
+                
+                
 
                 /// Interest Field
-                VStack(alignment: .leading, spacing: 4) {
+                HStack {
                     Text("Interest")
-                        .font(.system(.headline, design: .rounded))
-
-                    ZStack {
-                        Rectangle()
-                            .fill(.white)
-                            .frame(width: .infinity, height: 35)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color.gray, lineWidth: 1)
-
-                                TextField(
-                                    "Interest",
-                                    text: $newPerson.interest.name
-                                )
-                                .padding(8)
+            
+                    Divider()
+                        .frame(height: 24)
+                    
+                    Text(text == "" ? "Select or add new" : text)
+                        .foregroundStyle(.accent)
+                        .onTapGesture {
+                            showList = true
+                        }
+                        .onChange(of: text) { _, newValue in
+                            if let match = repo.interests.first(where: { $0.name == newValue }) {
+                                newPerson.interest = match
                             }
-                    }
-                }
+                        }
 
+                    Spacer()
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 12)
+                .background(Color(.secondarySystemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .sheet(isPresented: $showList) {
+                    InterestSheet(text: $text, options: $repo.interests)
+                }
+                
                 /// Notes Field
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Notes")
@@ -262,6 +288,7 @@ struct AddPersonView: View {
                     }
                 }
             }
+            }
             .padding(16)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -277,4 +304,8 @@ struct AddPersonView: View {
         }
 
     }
+
+#Preview {
+    AddPersonView(image: UIImage(systemName: "person.fill")!)
+        .environmentObject(PersonRepository())
 }

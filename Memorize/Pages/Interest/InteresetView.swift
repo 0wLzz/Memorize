@@ -10,7 +10,6 @@ import SwiftUI
 struct InteresetView: View {
     @EnvironmentObject var repo: PersonRepository
     let interest: InterestModel
-
     var filteredPeopleIndex: [Int] {
         repo.persons.indices.filter {
             repo.persons[$0].interest == interest
@@ -36,7 +35,7 @@ struct InteresetView: View {
                     }
                 }
             }
-//            .searchable(text: $interestViewModel.searchQuery)
+            //            .searchable(text: $interestViewModel.searchQuery)
             .navigationTitle(interest.name)  // shows the interest name
             .padding(15)
         }
