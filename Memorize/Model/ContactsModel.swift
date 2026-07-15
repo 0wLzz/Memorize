@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ContactsModel {
+struct ContactsModel: Codable {
     var WhatsApp: String?
     var Instagram: String?
     var Email: String?
