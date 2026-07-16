@@ -16,5 +16,5 @@ struct PersonModel: Identifiable, Codable {
     var profileImageIdentifier: String?
     var linkedAssetIdentifiers: [String] = []
     var faceEmbedding: [Float]? = nil
-    var isFavorite: Bool = false
+    var isFavorite = false // returns false boolean
 }
