@@ -3,54 +3,68 @@
 //  Memorize
 //
 //  Created by Hans Hartowidjojo on 16/07/26.
-//  SwiftData persistence entity — mirrors PersonModel.
-//  Only PersonRepository should ever touch this type directly.
+//  The only layer allowed to touch SwiftData persistence for PersonModel.
 //
 
 import Foundation
 import SwiftData
 
-@Model
-final class PersonEntity {
-    @Attribute(.unique) var id: UUID
-    var name: String
-    var notes: String?
+@Observable
+final class PersonRepository {
+    private var context: ModelContext
 
-    // ContactsModel and BirthdayModel are plain Codable structs (no @Model),
-    // so we store them as encoded Data and decode on the way out.
-    var contactsData: Data
-    var birthdayData: Data?
-
-    var profileImageIdentifier: String?
-    var linkedAssetIdentifiers: [String]
-    var faceEmbedding: [Float]?
-    var isFavorite: Bool
-
-    init(from model: PersonModel) {
-        self.id = model.id
-        self.name = model.name
-        self.notes = model.notes
-        self.contactsData = (try? JSONEncoder().encode(model.contacts)) ?? Data()
-        self.birthdayData = try? JSONEncoder().encode(model.birthday)
-        self.profileImageIdentifier = model.profileImageIdentifier
-        self.linkedAssetIdentifiers = model.linkedAssetIdentifiers
-        self.faceEmbedding = model.faceEmbedding
-        self.isFavorite = model.isFavorite
+    init(context: ModelContext) {
+        self.context = context
     }
 
-    func toModel() -> PersonModel {
-        let contacts = (try? JSONDecoder().decode(ContactsModel.self, from: contactsData)) ?? ContactsModel()
-        let birthday = birthdayData.flatMap { try? JSONDecoder().decode(BirthdayModel.self, from: $0) }
-        return PersonModel(
-            id: id,
-            name: name,
-            notes: notes,
-            contacts: contacts,
-            birthday: birthday,
-            profileImageIdentifier: profileImageIdentifier,
-            linkedAssetIdentifiers: linkedAssetIdentifiers,
-            faceEmbedding: faceEmbedding,
-            isFavorite: isFavorite
+    func fetchAll() -> [PersonModel] {
+        let descriptor = FetchDescriptor<PersonEntity>(sortBy: [SortDescriptor(\.name)])
+        do {
+            let entities = try context.fetch(descriptor)
+            return entities.map { $0.toModel() }
+        } catch {
+            print("Failed to fetch persons: \(error)")
+            return []
+        }
+    }
+
+    func add(_ person: PersonModel) {
+        let entity = PersonEntity(from: person)
+        context.insert(entity)
+        save()
+    }
+
+    func delete(_ person: PersonModel) {
+        let descriptor = FetchDescriptor<PersonEntity>(
+            predicate: #Predicate { $0.id == person.id }
         )
+        if let entity = try? context.fetch(descriptor).first {
+            context.delete(entity)
+            save()
+        }
+    }
+
+    func update(_ person: PersonModel) {
+        let descriptor = FetchDescriptor<PersonEntity>(
+            predicate: #Predicate { $0.id == person.id }
+        )
+        guard let entity = try? context.fetch(descriptor).first else { return }
+        entity.name = person.name
+        entity.notes = person.notes
+        entity.contactsData = (try? JSONEncoder().encode(person.contacts)) ?? Data()
+        entity.birthdayData = try? JSONEncoder().encode(person.birthday)
+        entity.profileImageIdentifier = person.profileImageIdentifier
+        entity.linkedAssetIdentifiers = person.linkedAssetIdentifiers
+        entity.faceEmbedding = person.faceEmbedding
+        entity.isFavorite = person.isFavorite
+        save()
+    }
+
+    private func save() {
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save context: \(error)")
+        }
     }
 }
