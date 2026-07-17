@@ -27,6 +27,34 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FaceRecognitionServiceTests.swift,
+				MemorizeTests.swift,
+				PersonEntityTests.swift,
+				PersonRepositoryTests.swift,
+				PhotoLibraryServicesTest.swift,
+				TestResources/person1_photo1.jpeg,
+				TestResources/person1_photo2.jpeg,
+				TestResources/person2_photo1.jpeg,
+			);
+			target = 452B95EA3008733B0087BB75 /* MemorizeTests */;
+		};
+		452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FaceRecognitionServiceTests.swift,
+				MemorizeTests.swift,
+				PersonEntityTests.swift,
+				PersonRepositoryTests.swift,
+				PhotoLibraryServicesTest.swift,
+				TestResources/person1_photo1.jpeg,
+				TestResources/person1_photo2.jpeg,
+				TestResources/person2_photo1.jpeg,
+			);
+			target = E08756B72F94EB4900339C96 /* Memorize */;
+		};
 		4553DF8F2F9750B300270643 /* Exceptions for "Memorize" folder in "Memorize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -38,8 +66,12 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		452B95EC3008733B0087BB75 /* MemorizeTests */ = {
+		452B96203008BD7C0087BB75 /* MemorizeTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */,
+				452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */,
+			);
 			path = MemorizeTests;
 			sourceTree = "<group>";
 		};
@@ -79,7 +111,7 @@
 			children = (
 				E08756BA2F94EB4900339C96 /* Memorize */,
 				E09FB1802F975CCE00D7E2DA /* MemorizeApp.swift */,
-				452B95EC3008733B0087BB75 /* MemorizeTests */,
+				452B96203008BD7C0087BB75 /* MemorizeTests */,
 				E08756B92F94EB4900339C96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,9 +141,6 @@
 			dependencies = (
 				452B95F03008733B0087BB75 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				452B95EC3008733B0087BB75 /* MemorizeTests */,
-			);
 			name = MemorizeTests;
 			packageProductDependencies = (
 			);
@@ -132,6 +161,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				452B96203008BD7C0087BB75 /* MemorizeTests */,
 				E08756BA2F94EB4900339C96 /* Memorize */,
 			);
 			name = Memorize;

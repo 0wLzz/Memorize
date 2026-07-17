@@ -40,6 +40,7 @@ final class FaceRecognitionService {
 
     private func detectAndCropFace(in image: UIImage) async -> UIImage? {
         guard let cgImage = image.cgImage else { return nil }
+        let orientation = CGImagePropertyOrientation(image.imageOrientation)
 
         return await withCheckedContinuation { continuation in
             let request = VNDetectFaceRectanglesRequest { request, _ in
@@ -49,7 +50,6 @@ final class FaceRecognitionService {
                     return
                 }
 
-                // Vision's boundingBox is normalized (0-1) with origin at bottom-left.
                 let width = CGFloat(cgImage.width)
                 let height = CGFloat(cgImage.height)
                 let rect = CGRect(
@@ -66,11 +66,10 @@ final class FaceRecognitionService {
                 continuation.resume(returning: UIImage(cgImage: cropped))
             }
 
-            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
             try? handler.perform([request])
         }
     }
-
     // MARK: - Preprocessing (resize, strip alpha, prewhiten)
 
     private func resize(_ image: UIImage, to size: Int) -> UIImage? {
