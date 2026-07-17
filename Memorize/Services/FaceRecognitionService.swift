@@ -25,30 +25,76 @@ final class FaceRecognitionService {
             fatalError("Failed to load Facenet6 model: \(error)")
         }
     }
+
     /// Detects a face in the given image and returns its 512-float embedding.
     /// Returns nil if no face is found or the model fails.
     func generateEmbedding(from image: UIImage) async -> [Float]? {
-        guard let croppedFace = await detectAndCropFace(in: image) else { return nil }
-        guard let resized = resize(croppedFace, to: inputSize) else { return nil }
-        guard let inputArray = try? preprocess(resized) else { return nil }
-
-        guard let prediction = try? facenet.prediction(input: inputArray) else { return nil }
+        guard let croppedFace = await detectAndCropFace(in: image) else {
+            print("❌ crop stage failed")
+            return nil
+        }
+        guard let resized = resize(croppedFace, to: inputSize) else {
+            print("❌ resize stage failed")
+            return nil
+        }
+        guard let inputArray = try? preprocess(resized) else {
+            print("❌ preprocess stage failed")
+            return nil
+        }
+        guard let prediction = try? facenet.prediction(input: inputArray) else {
+            print("❌ prediction stage failed")
+            return nil
+        }
         return arrayFromMultiArray(prediction.embeddings)
     }
 
     // MARK: - Vision face detection
 
+    /// Downscales large images before running Vision on them — full-resolution
+    /// photos (e.g. 4284x5712) are unnecessary for detection and can cause
+    /// Vision requests to be cancelled in constrained environments.
+    private func downscaledForDetection(_ image: UIImage, maxDimension: CGFloat = 1024) -> UIImage {
+        let size = image.size
+        let scale = min(maxDimension / size.width, maxDimension / size.height, 1.0)
+        guard scale < 1.0 else { return image }
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        let scaled = UIGraphicsGetImageFromCurrentImageContext() ?? image
+        UIGraphicsEndImageContext()
+        return scaled
+    }
+
+    /// Normalizes the image's pixel buffer to match its display orientation,
+    /// so bounding-box math and raw buffer coordinates agree.
+    private func normalizedUpright(_ image: UIImage) -> UIImage {
+        guard image.imageOrientation != .up else { return image }
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+        let normalized = UIGraphicsGetImageFromCurrentImageContext() ?? image
+        UIGraphicsEndImageContext()
+        return normalized
+    }
+
     private func detectAndCropFace(in image: UIImage) async -> UIImage? {
-        guard let cgImage = image.cgImage else { return nil }
-        let orientation = CGImagePropertyOrientation(image.imageOrientation)
+        let preparedImage = normalizedUpright(downscaledForDetection(image))
+        guard let cgImage = preparedImage.cgImage else {
+            print("❌ no cgImage")
+            return nil
+        }
 
         return await withCheckedContinuation { continuation in
-            let request = VNDetectFaceRectanglesRequest { request, _ in
+            let request = VNDetectFaceRectanglesRequest { request, error in
+                if let error = error {
+                    print("❌ Vision error: \(error)")
+                }
                 guard let results = request.results as? [VNFaceObservation],
                       let face = results.first else {
+                    print("❌ no face observations")
                     continuation.resume(returning: nil)
                     return
                 }
+                print("✅ face found: \(face.boundingBox)")
 
                 let width = CGFloat(cgImage.width)
                 let height = CGFloat(cgImage.height)
@@ -60,16 +106,20 @@ final class FaceRecognitionService {
                 )
 
                 guard let cropped = cgImage.cropping(to: rect) else {
+                    print("❌ crop rect out of bounds: \(rect), image size: \(width)x\(height)")
                     continuation.resume(returning: nil)
                     return
                 }
                 continuation.resume(returning: UIImage(cgImage: cropped))
             }
+            request.usesCPUOnly = true // avoid GPU/Metal cancellation issues in test runners
 
-            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
+            // Image is already normalized to .up, so orientation is always .up here.
+            let handler = VNImageRequestHandler(cgImage: cgImage, orientation: .up, options: [:])
             try? handler.perform([request])
         }
     }
+
     // MARK: - Preprocessing (resize, strip alpha, prewhiten)
 
     private func resize(_ image: UIImage, to size: Int) -> UIImage? {
