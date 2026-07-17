@@ -30,6 +30,7 @@
 		452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AddPersonViewModelTests.swift,
 				FaceRecognitionServiceTests.swift,
 				MemorizeTests.swift,
 				PersonEntityTests.swift,
@@ -44,6 +45,7 @@
 		452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AddPersonViewModelTests.swift,
 				FaceRecognitionServiceTests.swift,
 				MemorizeTests.swift,
 				PersonEntityTests.swift,
