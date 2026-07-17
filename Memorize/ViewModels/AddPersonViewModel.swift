@@ -24,4 +24,8 @@ final class AddPersonViewModel {
     func loadAssetIdentifiers() {
         availableAssetIdentifiers = photoLibraryService.fetchAllAssetIdentifiers()
     }
+    
+    func resolveImage(for identifier: String) async {
+        resolvedImage = await photoLibraryService.resolveImage(for: identifier, targetSize: CGSize(width: 300, height: 300))
+    }
 }

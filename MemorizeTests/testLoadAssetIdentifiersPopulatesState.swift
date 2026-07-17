@@ -22,3 +22,17 @@ func testLoadAssetIdentifiersPopulatesState() throws {
 
     XCTAssertEqual(viewModel.availableAssetIdentifiers, ["id-1", "id-2", "id-3"])
 }
+
+func testResolveImagePopulatesState() async throws {
+    let fakePhotoService = FakePhotoLibraryService()
+    fakePhotoService.stubbedImage = UIImage(systemName: "photo") // any non-nil UIImage works
+
+    let container = try ModelContainer(for: PersonEntity.self,
+                                        configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let repository = PersonRepository(context: ModelContext(container))
+    let viewModel = AddPersonViewModel(photoLibraryService: fakePhotoService, personRepository: repository)
+
+    await viewModel.resolveImage(for: "some-id")
+
+    XCTAssertNotNil(viewModel.resolvedImage)
+}

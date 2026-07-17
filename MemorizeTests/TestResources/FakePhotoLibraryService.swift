@@ -9,6 +9,7 @@ import UIKit
 
 final class FakePhotoLibraryService: PhotoLibraryServicing {
     var stubbedIdentifiers: [String] = []
+    var stubbedImage: UIImage? = nil
 
     func requestAuthorization() async -> PhotoLibraryService.AuthorizationResult {
         .authorized
@@ -19,6 +20,6 @@ final class FakePhotoLibraryService: PhotoLibraryServicing {
     }
 
     func resolveImage(for identifier: String, targetSize: CGSize) async -> UIImage? {
-        nil
+        stubbedImage
     }
 }
