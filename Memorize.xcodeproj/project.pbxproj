@@ -30,11 +30,14 @@
 		452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AddPersonViewModelTests.swift,
 				FaceRecognitionServiceTests.swift,
 				MemorizeTests.swift,
 				PersonEntityTests.swift,
 				PersonRepositoryTests.swift,
 				PhotoLibraryServicesTest.swift,
+				TestResources/FakePersonRepository.swift,
+				TestResources/FakePhotoLibraryService.swift,
 				TestResources/person1_photo1.jpeg,
 				TestResources/person1_photo2.jpeg,
 				TestResources/person2_photo1.jpeg,
@@ -44,11 +47,14 @@
 		452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AddPersonViewModelTests.swift,
 				FaceRecognitionServiceTests.swift,
 				MemorizeTests.swift,
 				PersonEntityTests.swift,
 				PersonRepositoryTests.swift,
 				PhotoLibraryServicesTest.swift,
+				TestResources/FakePersonRepository.swift,
+				TestResources/FakePhotoLibraryService.swift,
 				TestResources/person1_photo1.jpeg,
 				TestResources/person1_photo2.jpeg,
 				TestResources/person2_photo1.jpeg,

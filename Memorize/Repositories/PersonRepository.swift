@@ -9,6 +9,13 @@
 import Foundation
 import SwiftData
 
+protocol PersonRepositoryProtocol {
+    func fetchAll() -> [PersonModel]
+    func add(_ person: PersonModel)
+    func delete(_ person: PersonModel)
+    func update(_ person: PersonModel)
+}
+
 @Observable
 final class PersonRepository {
     private var context: ModelContext
@@ -68,3 +75,5 @@ final class PersonRepository {
         }
     }
 }
+
+extension PersonRepository: PersonRepositoryProtocol { }

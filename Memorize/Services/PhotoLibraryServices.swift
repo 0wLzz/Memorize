@@ -9,6 +9,12 @@ import Foundation
 import Photos
 import UIKit
 
+protocol PhotoLibraryServicing {
+    func requestAuthorization() async -> PhotoLibraryService.AuthorizationResult
+    func fetchAllAssetIdentifiers() -> [String]
+    func resolveImage(for identifier: String, targetSize: CGSize) async -> UIImage?
+}
+
 final class PhotoLibraryService {
 
     enum AuthorizationResult {
@@ -75,3 +81,5 @@ final class PhotoLibraryService {
         }
     }
 }
+
+extension PhotoLibraryService: PhotoLibraryServicing { }
