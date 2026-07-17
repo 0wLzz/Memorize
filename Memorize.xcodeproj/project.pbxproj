@@ -10,26 +10,78 @@
 		E09FB1922F975CCE00D7E2DA /* MemorizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09FB1802F975CCE00D7E2DA /* MemorizeApp.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		452B95EF3008733B0087BB75 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E08756B02F94EB4900339C96 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E08756B72F94EB4900339C96;
+			remoteInfo = Memorize;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		452B95EB3008733B0087BB75 /* MemorizeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MemorizeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08756B82F94EB4900339C96 /* Memorize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memorize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E09FB1802F975CCE00D7E2DA /* MemorizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FaceRecognitionServiceTests.swift,
+				MemorizeTests.swift,
+				PersonEntityTests.swift,
+				PersonRepositoryTests.swift,
+				PhotoLibraryServicesTest.swift,
+				TestResources/person1_photo1.jpeg,
+				TestResources/person1_photo2.jpeg,
+				TestResources/person2_photo1.jpeg,
+			);
+			target = 452B95EA3008733B0087BB75 /* MemorizeTests */;
+		};
+		452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FaceRecognitionServiceTests.swift,
+				MemorizeTests.swift,
+				PersonEntityTests.swift,
+				PersonRepositoryTests.swift,
+				PhotoLibraryServicesTest.swift,
+				TestResources/person1_photo1.jpeg,
+				TestResources/person1_photo2.jpeg,
+				TestResources/person2_photo1.jpeg,
+			);
+			target = E08756B72F94EB4900339C96 /* Memorize */;
+		};
 		4553DF8F2F9750B300270643 /* Exceptions for "Memorize" folder in "Memorize" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Legacy,
 			);
 			target = E08756B72F94EB4900339C96 /* Memorize */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		452B96203008BD7C0087BB75 /* MemorizeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				452B96303008BDFD0087BB75 /* Exceptions for "MemorizeTests" folder in "Memorize" target */,
+				452B96273008BD7D0087BB75 /* Exceptions for "MemorizeTests" folder in "MemorizeTests" target */,
+			);
+			path = MemorizeTests;
+			sourceTree = "<group>";
+		};
 		E08756BA2F94EB4900339C96 /* Memorize */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4553DF8F2F9750B300270643 /* Exceptions for "Memorize" folder in "Memorize" target */,
+			);
+			explicitFolders = (
+				Legacy,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -37,6 +89,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		452B95E83008733B0087BB75 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E08756B52F94EB4900339C96 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,6 +111,7 @@
 			children = (
 				E08756BA2F94EB4900339C96 /* Memorize */,
 				E09FB1802F975CCE00D7E2DA /* MemorizeApp.swift */,
+				452B96203008BD7C0087BB75 /* MemorizeTests */,
 				E08756B92F94EB4900339C96 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				E08756B82F94EB4900339C96 /* Memorize.app */,
+				452B95EB3008733B0087BB75 /* MemorizeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +128,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		452B95EA3008733B0087BB75 /* MemorizeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 452B95F13008733B0087BB75 /* Build configuration list for PBXNativeTarget "MemorizeTests" */;
+			buildPhases = (
+				452B95E73008733B0087BB75 /* Sources */,
+				452B95E83008733B0087BB75 /* Frameworks */,
+				452B95E93008733B0087BB75 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				452B95F03008733B0087BB75 /* PBXTargetDependency */,
+			);
+			name = MemorizeTests;
+			packageProductDependencies = (
+			);
+			productName = MemorizeTests;
+			productReference = 452B95EB3008733B0087BB75 /* MemorizeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E08756B72F94EB4900339C96 /* Memorize */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E08756C32F94EB4B00339C96 /* Build configuration list for PBXNativeTarget "Memorize" */;
@@ -80,6 +161,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				452B96203008BD7C0087BB75 /* MemorizeTests */,
 				E08756BA2F94EB4900339C96 /* Memorize */,
 			);
 			name = Memorize;
@@ -96,9 +178,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2640;
-				LastUpgradeCheck = 2640;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
 				TargetAttributes = {
+					452B95EA3008733B0087BB75 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = E08756B72F94EB4900339C96;
+					};
 					E08756B72F94EB4900339C96 = {
 						CreatedOnToolsVersion = 26.4;
 					};
@@ -119,11 +205,19 @@
 			projectRoot = "";
 			targets = (
 				E08756B72F94EB4900339C96 /* Memorize */,
+				452B95EA3008733B0087BB75 /* MemorizeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		452B95E93008733B0087BB75 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E08756B62F94EB4900339C96 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,6 +228,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		452B95E73008733B0087BB75 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E08756B42F94EB4900339C96 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,7 +245,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		452B95F03008733B0087BB75 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E08756B72F94EB4900339C96 /* Memorize */;
+			targetProxy = 452B95EF3008733B0087BB75 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		452B95F23008733B0087BB75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H8N6FN6T2A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hans.MemorizeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Memorize.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Memorize";
+			};
+			name = Debug;
+		};
+		452B95F33008733B0087BB75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = H8N6FN6T2A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hans.MemorizeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Memorize.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Memorize";
+			};
+			name = Release;
+		};
 		E08756C12F94EB4B00339C96 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -204,6 +357,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -261,6 +415,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -274,13 +429,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BDJ8GFWJ4;
+				DEVELOPMENT_TEAM = H8N6FN6T2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Memorize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Memorize;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos to add to our app";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need to access your photos to add them to the app";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Memorize needs access to your photos so you can tag people in them.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -297,7 +454,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -313,13 +470,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3BDJ8GFWJ4;
+				DEVELOPMENT_TEAM = H8N6FN6T2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Memorize/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Memorize;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos to add to our app";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need to access your photos to add them to the app";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Memorize needs access to your photos so you can tag people in them.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -336,7 +495,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
@@ -347,6 +506,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		452B95F13008733B0087BB75 /* Build configuration list for PBXNativeTarget "MemorizeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				452B95F23008733B0087BB75 /* Debug */,
+				452B95F33008733B0087BB75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E08756B32F94EB4900339C96 /* Build configuration list for PBXProject "Memorize" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
