@@ -20,4 +20,8 @@ final class AddPersonViewModel {
         self.photoLibraryService = photoLibraryService
         self.personRepository = personRepository
     }
+    
+    func loadAssetIdentifiers() {
+        availableAssetIdentifiers = photoLibraryService.fetchAllAssetIdentifiers()
+    }
 }
