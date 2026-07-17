@@ -28,4 +28,10 @@ final class AddPersonViewModel {
     func resolveImage(for identifier: String) async {
         resolvedImage = await photoLibraryService.resolveImage(for: identifier, targetSize: CGSize(width: 300, height: 300))
     }
+    
+    func tagAsset(_ identifier: String, to person: PersonModel) {
+        var updatedPerson = person
+        updatedPerson.linkedAssetIdentifiers.append(identifier)
+        personRepository.update(updatedPerson)
+    }
 }
