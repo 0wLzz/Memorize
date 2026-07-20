@@ -12,7 +12,11 @@ import UIKit
 import Vision
 import CoreML
 
-final class FaceRecognitionService {
+protocol FaceRecognitionServicing {
+    func generateEmbedding(from image: UIImage) async -> [Float]?
+}
+
+final class FaceRecognitionService: FaceRecognitionServicing {
 
     private let facenet: Facenet6
     private let inputSize = 160
