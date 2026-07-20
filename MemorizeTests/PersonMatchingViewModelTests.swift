@@ -49,6 +49,34 @@ final class PersonMatchingViewModelTests: XCTestCase {
 
         XCTAssertNil(result.person)
     }
+    
+    func testEvaluateMatch_scoreAboveThreshold_setsMatchResult() {
+        let vm = PersonMatchingViewModel(
+            personRepository: FakePersonRepository(),
+            faceRecognitionService: FakeFaceRecognitionService()
+        )
+        let target: [Float] = [1, 0, 0]
+        let personA = makePerson(name: "A", embedding: [0.99, 0.01, 0])
+
+        vm.evaluateMatch(for: target, among: [personA])
+
+        XCTAssertEqual(vm.matchResult?.name, "A")
+        XCTAssertNotNil(vm.matchScore)
+    }
+
+    func testEvaluateMatch_scoreBelowThreshold_returnsNilMatch() {
+        let vm = PersonMatchingViewModel(
+            personRepository: FakePersonRepository(),
+            faceRecognitionService: FakeFaceRecognitionService()
+        )
+        let target: [Float] = [1, 0, 0]
+        let personA = makePerson(name: "A", embedding: [0, 1, 0]) // orthogonal, score ≈ 0
+
+        vm.evaluateMatch(for: target, among: [personA])
+
+        XCTAssertNil(vm.matchResult)
+        XCTAssertNotNil(vm.matchScore) // score still reported, just below threshold
+    }
 
     // Helper — check if you already have a similar builder in your test target;
     // if PersonModel's initializer differs, adjust fields accordingly.

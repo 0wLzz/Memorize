@@ -49,3 +49,24 @@ extension PersonMatchingViewModel {
         return (bestPerson, bestScore)
     }
 }
+
+extension PersonMatchingViewModel {
+
+    /// Below this cosine similarity, a match is not considered confident
+    /// enough to call "known." Tune based on real test data over time.
+    static let matchThreshold: Float = 0.7
+
+    /// Runs the full match pipeline for a given embedding against known People,
+    /// and updates published state for the View to observe.
+    func evaluateMatch(for embedding: [Float], among people: [PersonModel]) {
+        let result = findBestMatch(for: embedding, among: people)
+
+        if result.score >= Self.matchThreshold {
+            matchResult = result.person
+            matchScore = result.score
+        } else {
+            matchResult = nil
+            matchScore = result.score
+        }
+    }
+}
